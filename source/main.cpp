@@ -1,29 +1,42 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include <iostream>
+#include <list>
+#include "ColorGradient.h"
+
+using namespace std;
+using namespace sf;
+
+int gridSize = 30;
+int padding = 5;
+int n = 11;
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(500, 500), "SFML works!");
-    sf::CircleShape shape(100.f, 6);
-    shape.setFillColor(sf::Color::Green);
-    shape.setPosition(sf::Vector2f(0, 0));
-
-    sf::CircleShape shape1(100.f, 6);
-    shape1.setFillColor(sf::Color::Red);
-    shape1.setPosition(sf::Vector2f(100, 300));
-
+    RenderWindow window(VideoMode::getDesktopMode(), "SFML works!");
+    list<RectangleShape> grid;
+    Vector2u size = window.getSize();
+    for (int y = 0; y * gridSize + (y + 1) * padding < size.y | y < n; y++)
+    {
+        for (int x = 0; x * gridSize + (x + 1) * padding < size.x | x < n; x++)
+        {
+            RectangleShape shape({gridSize, gridSize});
+            shape.setPosition(x * gridSize + (x + 1) * padding, y * gridSize + (y + 1) * padding);
+            shape.setFillColor(Color::Blue);
+            grid.push_back(shape);
+        }
+    }
     while (window.isOpen())
     {
-        sf::Event event;
+        Event event;
         while (window.pollEvent(event))
         {
-            if (event.type == sf::Event::Closed)
+            if (event.type == Event::Closed)
                 window.close();
         }
-
         window.clear();
-        window.draw(shape);
-        window.draw(shape1);
+        for (RectangleShape shape : grid)
+            window.draw(shape);
         window.display();
     }
     return 0;
