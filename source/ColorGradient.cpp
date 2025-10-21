@@ -12,6 +12,7 @@ ColorGradient::ColorGradient(Color start, Color end)
     deltaR = end.r - start.r;
     deltaG = end.g - start.g;
     deltaB = end.b - start.b;
+    deltaA = end.a - start.a;
 }
 
 Color ColorGradient::getColor(float percent)
@@ -21,5 +22,6 @@ Color ColorGradient::getColor(float percent)
     color.r = color.r + (int)(deltaR * percent);
     color.g = color.g + (int)(deltaG * percent);
     color.b = color.b + (int)(deltaB * percent);
+    color.a = color.a + (int)(deltaA * percent);
     return color;
 }

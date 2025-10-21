@@ -12,6 +12,7 @@ class ColorGradient
         int deltaR;
         int deltaG;
         int deltaB;
+        int deltaA;
 
     public:
         ColorGradient(Color start, Color end);
