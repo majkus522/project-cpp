@@ -8,14 +8,13 @@ using namespace sf;
 
 class Cell
 {
-    private:
+    public:
         int state;
-        int maxState = 8;
-        ColorGradient gradient = ColorGradient(Color::Red, Color::Blue);
+        int maxState;
+        ColorGradient gradient = ColorGradient(Color::White, Color::White);
 
     public:
         Cell();
-        Cell(int state);
         Color getColor();
 };
 

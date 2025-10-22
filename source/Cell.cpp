@@ -4,14 +4,13 @@
 
 using namespace sf;
 
-Cell::Cell() {}
-
-Cell::Cell(int state)
+Cell::Cell()
 {
-    this->state = state % maxState;
+    this->state = 0;
+    this->maxState = 1;
 }
 
 Color Cell::getColor()
 {
-    return gradient.getColor((float)state / (float)maxState);
+    return this->gradient.getColor((float)state / (float)maxState);
 }
