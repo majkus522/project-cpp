@@ -28,3 +28,4 @@ $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 clean:
 	@echo "Cleaning up build directory..."
 	@rm -rf $(BUILD_DIR)
+	@rm -rf sfml-app

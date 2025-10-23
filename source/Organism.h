@@ -2,9 +2,11 @@
 #define PROJECT_CPP_ORGANISM_H
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "Cell.h"
 
 using namespace sf;
+using namespace std;
 
 class Organism
 {
@@ -16,7 +18,7 @@ class Organism
         int n;
         float gridSize = 30.f;
         float padding = 5.f;
-        Cell **cells;
+        vector<vector<Cell*>> cells;
 };
 
 #endif

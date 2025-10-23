@@ -15,16 +15,17 @@ using namespace sf;
 Organism::Organism(int n)
 {
     this->n = n;
-    cells = new Cell*[n];
+    cells = {};
     for (int y = 0; y < n; y++)
     {
-        cells[y] = (Cell*)(malloc(sizeof(Cell) * n));
+        vector<Cell*> row;
         for (int x = 0; x < n; x++)
         {
-            cells[y][x] = NormalCell();
+            row.push_back(new NormalCell());
         }
+        cells.push_back(row);
     }
-    cells[7][7] = SickCell();
+    cells[7][7] = new SickCell();
 }
 
 void Organism::drawGrid(RenderWindow *window)
@@ -37,7 +38,7 @@ void Organism::drawGrid(RenderWindow *window)
         {
             RectangleShape shape({gridSize, gridSize});
             shape.setPosition(x * gridSize + (x + 1) * padding, y * gridSize + (y + 1) * padding);
-            shape.setFillColor(cells[y][x].getColor());
+            shape.setFillColor(cells[y][x]->getColor());
             window->draw(shape);
         }
     }
