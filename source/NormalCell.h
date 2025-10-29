@@ -7,6 +7,7 @@ class NormalCell : public Cell
 {
     public:
         NormalCell();
+        void tick() override;
 };
 
 #endif

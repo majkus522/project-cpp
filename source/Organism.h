@@ -13,6 +13,7 @@ class Organism
     public:
         Organism(int n);
         void drawGrid(RenderWindow *window);
+        void tick();
 
     private:
         int n;

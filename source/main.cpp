@@ -18,7 +18,7 @@ int main()
     Organism organism(15);
     organism.drawGrid(&window);
     Clock clock;
-    Time delay = seconds(5);
+    Time delay = seconds(2);
     clock.restart();
     while (window.isOpen())
     {
@@ -29,6 +29,7 @@ int main()
         if(clock.getElapsedTime() < delay)
             continue;
         clock.restart();
+        organism.tick();
         organism.drawGrid(&window);
     }
     return 0;

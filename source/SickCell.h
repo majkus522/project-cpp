@@ -7,6 +7,7 @@ class SickCell : public Cell
 {
     public:
         SickCell();
+        void tick() override;
 };
 
 #endif

@@ -44,3 +44,14 @@ void Organism::drawGrid(RenderWindow *window)
     }
     window->display();
 }
+
+void Organism::tick()
+{
+    for (int y = 0; y < n; y++)
+    {
+        for (int x = 0; x < n; x++)
+        {
+            cells[y][x]->tick();
+        }
+    }
+}

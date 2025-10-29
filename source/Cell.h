@@ -8,7 +8,7 @@ using namespace sf;
 
 class Cell
 {
-    public:
+    protected:
         int state;
         int maxState;
         ColorGradient gradient = ColorGradient(Color::White, Color::White);
@@ -16,6 +16,7 @@ class Cell
     public:
         Cell();
         Color getColor();
+        virtual void tick() = 0;
 };
 
 #endif
