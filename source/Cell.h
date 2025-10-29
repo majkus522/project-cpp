@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "ColorGradient.h"
+#include "Settings.h"
 
 using namespace sf;
 
@@ -11,7 +12,7 @@ class Cell
     protected:
         int state;
         int maxState;
-        ColorGradient gradient = ColorGradient(Color::White, Color::White);
+        ColorGradient gradient = ColorGradient(Settings::colorNormal, Settings::colorNormal);
 
     public:
         Cell();

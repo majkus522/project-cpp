@@ -11,12 +11,11 @@ using namespace std;
 class Organism
 {
     public:
-        Organism(int n);
+        Organism();
         void drawGrid(RenderWindow *window);
         void tick();
 
     private:
-        int n;
         float gridSize = 30.f;
         float padding = 5.f;
         vector<vector<Cell*>> cells;

@@ -8,18 +8,18 @@
 #include "SickCell.h"
 #include "NormalCell.h"
 #include "Organism.h"
+#include "Settings.h"
 
 using namespace std;
 using namespace sf;
 
-Organism::Organism(int n)
+Organism::Organism()
 {
-    this->n = n;
     cells = {};
-    for (int y = 0; y < n; y++)
+    for (int y = 0; y < Settings::sizeY; y++)
     {
         vector<Cell*> row;
-        for (int x = 0; x < n; x++)
+        for (int x = 0; x < Settings::sizeX; x++)
         {
             row.push_back(new NormalCell());
         }
@@ -32,9 +32,9 @@ void Organism::drawGrid(RenderWindow *window)
 {
     window->clear();
     Vector2u size = window->getSize();
-    for (int y = 0; y * gridSize + (y + 1) * padding < size.y & y < n; y++)
+    for (int y = 0; y * gridSize + (y + 1) * padding < size.y & y < Settings::sizeY; y++)
     {
-        for (int x = 0; x * gridSize + (x + 1) * padding < size.x & x < n; x++)
+        for (int x = 0; x * gridSize + (x + 1) * padding < size.x & x < Settings::sizeX; x++)
         {
             RectangleShape shape({gridSize, gridSize});
             shape.setPosition(x * gridSize + (x + 1) * padding, y * gridSize + (y + 1) * padding);
@@ -47,9 +47,9 @@ void Organism::drawGrid(RenderWindow *window)
 
 void Organism::tick()
 {
-    for (int y = 0; y < n; y++)
+    for (int y = 0; y < Settings::sizeY; y++)
     {
-        for (int x = 0; x < n; x++)
+        for (int x = 0; x < Settings::sizeX; x++)
         {
             cells[y][x]->tick();
         }

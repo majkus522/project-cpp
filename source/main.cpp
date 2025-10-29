@@ -8,6 +8,7 @@
 #include "SickCell.h"
 #include "NormalCell.h"
 #include "Organism.h"
+#include "Settings.h"
 
 using namespace std;
 using namespace sf;
@@ -15,10 +16,9 @@ using namespace sf;
 int main()
 {
     RenderWindow window(VideoMode::getDesktopMode(), "SFML works!");
-    Organism organism(15);
+    Organism organism;
     organism.drawGrid(&window);
     Clock clock;
-    Time delay = seconds(2);
     clock.restart();
     while (window.isOpen())
     {
@@ -26,7 +26,7 @@ int main()
         while (window.pollEvent(event))
             if (event.type == Event::Closed)
                 window.close();
-        if(clock.getElapsedTime() < delay)
+        if(clock.getElapsedTime() < Settings::delay)
             continue;
         clock.restart();
         organism.tick();

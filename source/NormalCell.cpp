@@ -9,10 +9,6 @@ NormalCell::NormalCell()
 {
     this->maxState = 3;
     this->state = 3;
-    this->gradient = ColorGradient(Color::Blue, Color::Blue);
 }
 
-void NormalCell::tick()
-{
-    cout << "normal" << endl;
-}
+void NormalCell::tick() { }

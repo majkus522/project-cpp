@@ -3,16 +3,20 @@
 #include "ColorGradient.h"
 
 #include <iostream>
+
+#include "Settings.h"
 using namespace std;
 
 SickCell::SickCell()
 {
-    this->maxState = 4;
-    this->state = 4;
-    this->gradient = ColorGradient(Color::Red, Color::Red);
+    this->state = 0;
+    this->maxState = Settings::timeSick;
+    this->gradient = ColorGradient(Settings::colorNormal, Settings::colorSick);
 }
 
 void SickCell::tick()
 {
-    cout << "sick" << endl;
+    this->state += 1;
+    if (this->state >= maxState)
+        cout << "cure" << endl;
 }
