@@ -25,7 +25,8 @@ Organism::Organism()
         }
         cells.push_back(row);
     }
-    cells[7][7] = new SickCell();
+    cells[7][7] = new SickCell(this, Vector2i(7,7));
+    newCells = cells;
 }
 
 void Organism::drawGrid(RenderWindow *window)
@@ -54,4 +55,12 @@ void Organism::tick()
             cells[y][x]->tick();
         }
     }
+    cells = newCells;
+}
+
+void Organism::infect(Vector2i position)
+{
+    if (position.x < 0 || position.x >= Settings::sizeX || position.y < 0 || position.y >= Settings::sizeY)
+        return;
+    newCells[position.y][position.x] = new SickCell(this, position);
 }

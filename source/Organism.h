@@ -14,11 +14,13 @@ class Organism
         Organism();
         void drawGrid(RenderWindow *window);
         void tick();
+        void infect(Vector2i position);
 
     private:
         float gridSize = 30.f;
         float padding = 5.f;
         vector<vector<Cell*>> cells;
+        vector<vector<Cell*>> newCells;
 };
 
 #endif

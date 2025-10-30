@@ -13,6 +13,7 @@ class Settings
         static int sizeY;
         static int timeSick;
         static int timeResistant;
+        static float spreadChance;
         static Time delay;
         static Color colorNormal;
         static Color colorSick;
