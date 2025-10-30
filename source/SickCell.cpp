@@ -34,7 +34,7 @@ void SickCell::tick()
         {
             if (x != 0 || y != 0)
                 if (randomFloat() < Settings::spreadChance)
-                    organism->infect(position + Vector2i(x, y));
+                    organism->editCell(position + Vector2i(x, y), new SickCell(organism, position + Vector2i(x, y)));
         }
     }
 }

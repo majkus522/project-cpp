@@ -58,9 +58,9 @@ void Organism::tick()
     cells = newCells;
 }
 
-void Organism::infect(Vector2i position)
+void Organism::editCell(Vector2i position, Cell *newState)
 {
     if (position.x < 0 || position.x >= Settings::sizeX || position.y < 0 || position.y >= Settings::sizeY)
         return;
-    newCells[position.y][position.x] = new SickCell(this, position);
+    newCells[position.y][position.x] = newState;
 }
