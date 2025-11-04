@@ -4,12 +4,20 @@
 #include <SFML/Graphics/RectangleShape.hpp>
 
 using namespace sf;
+using namespace std;
 
-class Button : public RectangleShape
+class Button : public Drawable
 {
+    private:
+        Vector2f position;
+        Vector2f size;
+        string text;
+        Rect<float> rect;
+        void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+
     public:
-        Button();
-        bool isClicked(Vector2f position);
+        Button(Vector2f position, Vector2f size, string text);
+        bool isClicked(Vector2f position) const;
 };
 
 #endif
