@@ -64,3 +64,10 @@ void Organism::editCell(Vector2i position, Cell *newState)
         return;
     newCells[position.y][position.x] = newState;
 }
+
+bool Organism::canInfect(Vector2i position) const
+{
+    if (position.x < 0 || position.x >= Settings::sizeX || position.y < 0 || position.y >= Settings::sizeY)
+        return false;
+    return dynamic_cast<NormalCell*>(cells[position.y][position.x]);
+}

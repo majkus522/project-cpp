@@ -5,6 +5,7 @@
 #include <iostream>
 #include <random>
 
+#include "ResistantCell.h"
 #include "Settings.h"
 using namespace std;
 
@@ -33,8 +34,13 @@ void SickCell::tick()
         for (int x = -1; x <= 1; x++)
         {
             if (x != 0 || y != 0)
-                if (randomFloat() < Settings::spreadChance)
-                    organism->editCell(position + Vector2i(x, y), new SickCell(organism, position + Vector2i(x, y)));
+                if (organism->canInfect(position + Vector2i(x, y)))
+                    if (randomFloat() < Settings::spreadChance)
+                        organism->editCell(position + Vector2i(x, y), new SickCell(organism, position + Vector2i(x, y)));
         }
+    }
+    if (state >= maxState)
+    {
+        organism->editCell(position, new ResistantCell(organism, position));
     }
 }

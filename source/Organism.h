@@ -15,6 +15,7 @@ class Organism
         void drawGrid(RenderWindow *window);
         void tick();
         void editCell(Vector2i position, Cell *newState);
+        bool canInfect(Vector2i position) const;
 
     private:
         float gridSize = 30.f;
