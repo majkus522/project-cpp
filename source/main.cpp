@@ -1,3 +1,4 @@
+#include <mutex>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System/Clock.hpp>
@@ -13,10 +14,13 @@ int main()
     RenderWindow window(VideoMode(500, 800), "Simulation - Config");
     RenderWindow simulation(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation");
     Organism organism;
-    organism.drawGrid(&window);
-    Clock clock;
-    clock.restart();
-    Button button = Button();
+    Clock timer;
+    timer.restart();
+    Button startButton = Button({100, 100}, {200, 50}, "Start");
+    Button stopButton = Button({100, 200}, {200, 50}, "Stop");
+    Button tickButton = Button({100, 300}, {200, 50}, "Tick");
+    bool isRunning = false;
+    bool lockClick = false;
     while (window.isOpen())
     {
         Event event;
@@ -30,14 +34,37 @@ int main()
                 window.close();
                 simulation.close();
             }
+
+        if (event.type == sf::Event::MouseButtonPressed)
+        {
+            if (event.mouseButton.button == sf::Mouse::Left && !lockClick)
+            {
+                lockClick = true;
+                sf::Vector2i localPosition = sf::Mouse::getPosition(window);
+                if (startButton.isClicked((Vector2f)localPosition)) {
+                    isRunning = true;
+                }
+                else if (stopButton.isClicked((Vector2f)localPosition)) {
+                    isRunning = false;
+                }
+                else if (tickButton.isClicked((Vector2f)localPosition)) {
+                    organism.tick();
+                }
+            }
+        }
+        else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+            lockClick = false;
+
         window.clear();
         simulation.clear();
-        if(clock.getElapsedTime() < Settings::delay)
-            continue;
-        window.draw(button);
-        clock.restart();
-        organism.tick();
+        if(timer.getElapsedTime() >= Settings::delay && isRunning) {
+            organism.tick();
+            timer.restart();
+        }
         organism.drawGrid(&simulation);
+        window.draw(startButton);
+        window.draw(stopButton);
+        window.draw(tickButton);
         window.display();
         simulation.display();
     }
