@@ -2,8 +2,8 @@
 #define PROJECT_CPP_CELL_H
 
 #include <SFML/Graphics.hpp>
-#include "ColorGradient.h"
-#include "Settings.h"
+#include "../ColorGradient.h"
+#include "../Settings.h"
 
 using namespace sf;
 

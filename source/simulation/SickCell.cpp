@@ -1,13 +1,9 @@
+#include <random>
 #include "SickCell.h"
 #include "Cell.h"
-#include "ColorGradient.h"
-
-#include <iostream>
-#include <random>
-
 #include "ResistantCell.h"
-#include "Settings.h"
-using namespace std;
+#include "../ColorGradient.h"
+#include "../Settings.h"
 
 float randomFloat()
 {

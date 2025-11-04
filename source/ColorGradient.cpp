@@ -1,7 +1,5 @@
 #include "ColorGradient.h"
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <iostream>
 
 using namespace std;
 using namespace sf;

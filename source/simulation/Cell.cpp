@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
-#include "ColorGradient.h"
 #include "Cell.h"
+#include "../ColorGradient.h"
 
 using namespace sf;
 

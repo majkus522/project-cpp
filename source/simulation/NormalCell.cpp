@@ -1,9 +1,5 @@
 #include "NormalCell.h"
 #include "Cell.h"
-#include "ColorGradient.h"
-
-#include <iostream>
-using namespace std;
 
 NormalCell::NormalCell()
 {

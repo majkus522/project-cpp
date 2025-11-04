@@ -2,15 +2,9 @@
 #include <SFML/Window.hpp>
 #include <SFML/System/Clock.hpp>
 #include <SFML/System/Time.hpp>
-#include <iostream>
-#include "ColorGradient.h"
-#include "Cell.h"
-#include "SickCell.h"
-#include "NormalCell.h"
-#include "Organism.h"
 #include "Settings.h"
+#include "simulation/Organism.h"
 
-using namespace std;
 using namespace sf;
 
 int main()

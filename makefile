@@ -4,7 +4,7 @@ SRC_DIR := source
 BUILD_DIR := build
 TARGET := sfml-app
 
-CPP_FILES := $(wildcard $(SRC_DIR)/*.cpp)
+CPP_FILES := $(shell find $(SRC_DIR) -type f -name '*.cpp')
 OBJ_FILES := $(patsubst $(SRC_DIR)/%.cpp, $(BUILD_DIR)/%.o, $(CPP_FILES))
 
 .PHONY: all clean
@@ -23,6 +23,7 @@ $(BUILD_DIR):
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@echo "Compiling $< -> $@"
+	@mkdir -p $(dir $@)
 	@$(CXX) -c $< -o $@
 
 clean:

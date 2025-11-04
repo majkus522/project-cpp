@@ -2,7 +2,6 @@
 #define PROJECT_CPP_ORGANISM_H
 
 #include <SFML/Graphics.hpp>
-#include <iostream>
 #include "Cell.h"
 
 using namespace sf;

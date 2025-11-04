@@ -1,5 +1,4 @@
 #include "ResistantCell.h"
-
 #include "NormalCell.h"
 
 ResistantCell::ResistantCell(Organism *parent, Vector2i position)
