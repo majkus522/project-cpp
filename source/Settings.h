@@ -14,6 +14,8 @@ class Settings
         static int timeSick;
         static int timeResistant;
         static float spreadChance;
+        static float gridSize;
+        static float padding;
         static Time delay;
         static Color colorNormal;
         static Color colorSick;

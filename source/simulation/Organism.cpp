@@ -25,19 +25,17 @@ Organism::Organism()
 
 void Organism::drawGrid(RenderWindow *window)
 {
-    window->clear();
     Vector2u size = window->getSize();
-    for (int y = 0; y * gridSize + (y + 1) * padding < size.y & y < Settings::sizeY; y++)
+    for (int y = 0; y < Settings::sizeY; y++)
     {
-        for (int x = 0; x * gridSize + (x + 1) * padding < size.x & x < Settings::sizeX; x++)
+        for (int x = 0; x < Settings::sizeX; x++)
         {
-            RectangleShape shape({gridSize, gridSize});
-            shape.setPosition(x * gridSize + (x + 1) * padding, y * gridSize + (y + 1) * padding);
+            RectangleShape shape({Settings::gridSize, Settings::gridSize});
+            shape.setPosition(x * Settings::gridSize + (x + 1) * Settings::padding, y * Settings::gridSize + (y + 1) * Settings::padding);
             shape.setFillColor(cells[y][x]->getColor());
             window->draw(shape);
         }
     }
-    window->display();
 }
 
 void Organism::tick()

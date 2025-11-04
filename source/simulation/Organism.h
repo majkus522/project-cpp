@@ -17,8 +17,6 @@ class Organism
         bool canInfect(Vector2i position) const;
 
     private:
-        float gridSize = 30.f;
-        float padding = 5.f;
         vector<vector<Cell*>> cells;
         vector<vector<Cell*>> newCells;
 };
