@@ -1,4 +1,3 @@
-#include <mutex>
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/System/Clock.hpp>
@@ -25,12 +24,14 @@ int main()
     {
         Event event;
         while (window.pollEvent(event))
-            if (event.type == Event::Closed) {
+            if (event.type == Event::Closed)
+            {
                 window.close();
                 simulation.close();
             }
         while (simulation.pollEvent(event))
-            if (event.type == Event::Closed) {
+            if (event.type == Event::Closed)
+            {
                 window.close();
                 simulation.close();
             }
@@ -41,13 +42,16 @@ int main()
             {
                 lockClick = true;
                 sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-                if (startButton.isClicked((Vector2f)localPosition)) {
+                if (startButton.isClicked((Vector2f)localPosition))
+                {
                     isRunning = true;
                 }
-                else if (stopButton.isClicked((Vector2f)localPosition)) {
+                else if (stopButton.isClicked((Vector2f)localPosition))
+                {
                     isRunning = false;
                 }
-                else if (tickButton.isClicked((Vector2f)localPosition)) {
+                else if (tickButton.isClicked((Vector2f)localPosition) && !isRunning)
+                {
                     organism.tick();
                 }
             }
@@ -57,7 +61,8 @@ int main()
 
         window.clear();
         simulation.clear();
-        if(timer.getElapsedTime() >= Settings::delay && isRunning) {
+        if(timer.getElapsedTime() >= Settings::delay && isRunning)
+        {
             organism.tick();
             timer.restart();
         }
