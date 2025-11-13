@@ -1,14 +1,15 @@
-#ifndef PROJECT_CPP_BUTTON_H
-#define PROJECT_CPP_BUTTON_H
+#ifndef PROJECT_CPP_INPUTFIELD_H
+#define PROJECT_CPP_INPUTFIELD_H
 
+#include <string>
 #include <SFML/Graphics/Drawable.hpp>
 
 using namespace sf;
 using namespace std;
 
-class Button : public Drawable
+class InputField : public Drawable
 {
-    private:
+    protected:
         Vector2f position;
         Vector2f size;
         string text;
@@ -16,8 +17,9 @@ class Button : public Drawable
         void draw(RenderTarget& target, RenderStates states) const override;
 
     public:
-        Button(Vector2f position, Vector2f size, string text);
+        InputField(Vector2f position, Vector2f size);
         bool isClicked(Vector2f position) const;
+        virtual void setText(string text);
 };
 
 #endif

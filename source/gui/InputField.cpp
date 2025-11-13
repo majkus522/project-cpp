@@ -3,25 +3,34 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 
-#include "Button.h"
+#include "InputField.h"
 
 using namespace sf;
 using namespace std;
 
-Button::Button(Vector2f position, Vector2f size, string text)
+InputField::InputField(Vector2f position, Vector2f size)
 {
     this->position = position;
     this->size = size;
-    this->text = text;
+    this->text = "";
     this->rect = Rect<float>(position, size);
 }
 
-bool Button::isClicked(Vector2f position) const
+bool InputField::isClicked(Vector2f position) const
 {
     return rect.contains(position);
 }
 
-void Button::draw(RenderTarget &target, RenderStates states) const
+void InputField::setText(string text)
+{
+    if ((int)text[0] == 8) {
+        this->text = this->text.substr(1);
+        return;
+    }
+    this->text += text;
+}
+
+void InputField::draw(RenderTarget &target, RenderStates states) const
 {
     RectangleShape rectangle;
     rectangle.setPosition(position);
@@ -35,8 +44,8 @@ void Button::draw(RenderTarget &target, RenderStates states) const
     font.loadFromFile("arial.ttf");
     Text textShape = Text(text, font);
     FloatRect textBounds = textShape.getLocalBounds();
-    textShape.setOrigin(textBounds.left + textBounds.width / 2.0f,textBounds.top + textBounds.height / 2.0f);
-    Vector2f rectCenter(rect.getPosition().x + rect.getSize().x / 2.0f, rect.getPosition().y + rect.getSize().y / 2.0f);
+    textShape.setOrigin(textBounds.left - 10,textBounds.top + textBounds.height / 2.0f);
+    Vector2f rectCenter(rect.getPosition().x, rect.getPosition().y + rect.getSize().y / 2.0f);
     textShape.setPosition(rectCenter);
     textShape.setCharacterSize(30);
     textShape.setFillColor(Color::Red);
