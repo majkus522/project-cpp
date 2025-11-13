@@ -10,6 +10,14 @@
 
 using namespace sf;
 
+vector<GuiElement*> guiElements;
+
+void setEnabledAll(bool value)
+{
+    for (GuiElement * element : guiElements)
+        element->setEnabled(value);
+}
+
 int main()
 {
     RenderWindow window(VideoMode(500, 800), "Simulation - Config");
@@ -18,9 +26,9 @@ int main()
     Clock timer;
     timer.restart();
 
-    vector<GuiElement*> guiElements;
     guiElements.push_back(new Button({100, 100}, {200, 50}, "Start"));
     guiElements.push_back(new Button({100, 200}, {200, 50}, "Stop"));
+    guiElements[1]->setEnabled(false);
     guiElements.push_back(new Button({100, 300}, {200, 50}, "Tick"));
     guiElements.push_back(new IntField({100, 400}, {200, 50}, -1000, 1000));
     InputField *focus = nullptr;
@@ -53,10 +61,14 @@ int main()
                 if (((Button*)guiElements[0])->isClicked((Vector2f)localPosition))
                 {
                     isRunning = true;
+                    setEnabledAll(false);
+                    guiElements[1]->setEnabled(true);
                 }
                 else if (((Button*)guiElements[1])->isClicked((Vector2f)localPosition))
                 {
                     isRunning = false;
+                    setEnabledAll(true);
+                    guiElements[1]->setEnabled(false);
                 }
                 else if (((Button*)guiElements[2])->isClicked((Vector2f)localPosition) && !isRunning)
                 {

@@ -18,7 +18,7 @@ InputField::InputField(Vector2f position, Vector2f size)
 
 bool InputField::isClicked(Vector2f position) const
 {
-    return rect.contains(position);
+    return rect.contains(position) && isEnabled;
 }
 
 void InputField::setText(string text)
@@ -35,7 +35,7 @@ void InputField::draw(RenderTarget &target, RenderStates states) const
     RectangleShape rectangle;
     rectangle.setPosition(position);
     rectangle.setSize(size);
-    rectangle.setFillColor(Color::White);
+    rectangle.setFillColor(isEnabled ? Color::White : Color::Black);
     rectangle.setOutlineColor(Color(100, 100, 100));
     rectangle.setOutlineThickness(3);
     target.draw(rectangle, states);
