@@ -1,16 +1,14 @@
 #ifndef PROJECT_CPP_BUTTON_H
 #define PROJECT_CPP_BUTTON_H
 
-#include <SFML/Graphics/Drawable.hpp>
+#include "GuiElement.h"
 
 using namespace sf;
 using namespace std;
 
-class Button : public Drawable
+class Button : public GuiElement
 {
-    private:
-        Vector2f position;
-        Vector2f size;
+    protected:
         string text;
         Rect<float> rect;
         void draw(RenderTarget& target, RenderStates states) const override;

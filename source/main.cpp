@@ -17,14 +17,17 @@ int main()
     Organism organism;
     Clock timer;
     timer.restart();
-    Button startButton = Button({100, 100}, {200, 50}, "Start");
-    Button stopButton = Button({100, 200}, {200, 50}, "Stop");
-    Button tickButton = Button({100, 300}, {200, 50}, "Tick");
-    IntField field = IntField({100, 400}, {200, 50}, -1000, 1000);
+
+    vector<GuiElement*> guiElements;
+    guiElements.push_back(new Button({100, 100}, {200, 50}, "Start"));
+    guiElements.push_back(new Button({100, 200}, {200, 50}, "Stop"));
+    guiElements.push_back(new Button({100, 300}, {200, 50}, "Tick"));
+    guiElements.push_back(new IntField({100, 400}, {200, 50}, -1000, 1000));
     InputField *focus = nullptr;
     bool isRunning = false;
     bool lockClick = false;
     bool lockInput = false;
+
     while (window.isOpen())
     {
         Event event;
@@ -47,21 +50,21 @@ int main()
             {
                 lockClick = true;
                 sf::Vector2i localPosition = sf::Mouse::getPosition(window);
-                if (startButton.isClicked((Vector2f)localPosition))
+                if (((Button*)guiElements[0])->isClicked((Vector2f)localPosition))
                 {
                     isRunning = true;
                 }
-                else if (stopButton.isClicked((Vector2f)localPosition))
+                else if (((Button*)guiElements[1])->isClicked((Vector2f)localPosition))
                 {
                     isRunning = false;
                 }
-                else if (tickButton.isClicked((Vector2f)localPosition) && !isRunning)
+                else if (((Button*)guiElements[2])->isClicked((Vector2f)localPosition) && !isRunning)
                 {
                     organism.tick();
                 }
-                else if (field.isClicked((Vector2f)localPosition))
+                else if (((InputField*)guiElements[3])->isClicked((Vector2f)localPosition))
                 {
-                    focus = &field;
+                    focus = (InputField*)guiElements[3];
                 }
                 else
                 {
@@ -96,10 +99,8 @@ int main()
             timer.restart();
         }
         organism.drawGrid(&simulation);
-        window.draw(startButton);
-        window.draw(stopButton);
-        window.draw(tickButton);
-        window.draw(field);
+        for (GuiElement * element : guiElements)
+            window.draw(*element);
         window.display();
         simulation.display();
     }

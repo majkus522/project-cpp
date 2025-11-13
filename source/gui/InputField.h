@@ -2,16 +2,14 @@
 #define PROJECT_CPP_INPUTFIELD_H
 
 #include <string>
-#include <SFML/Graphics/Drawable.hpp>
+#include "GuiElement.h"
 
 using namespace sf;
 using namespace std;
 
-class InputField : public Drawable
+class InputField : public GuiElement
 {
     protected:
-        Vector2f position;
-        Vector2f size;
         string text;
         Rect<float> rect;
         void draw(RenderTarget& target, RenderStates states) const override;
