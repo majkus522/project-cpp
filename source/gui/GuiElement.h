@@ -10,14 +10,14 @@ class GuiElement : public Drawable
     protected:
         Vector2f position;
         Vector2f size;
-        bool isEnabled = true;
+        mutable bool isEnabled = true;
 
     public:
         virtual void draw(RenderTarget& target, RenderStates states) const = 0;
-        void setEnabled(bool value);
+        void setEnabled(bool value) const;
 };
 
-inline void GuiElement::setEnabled(bool value)
+inline void GuiElement::setEnabled(bool value) const
 {
     isEnabled = value;
 }

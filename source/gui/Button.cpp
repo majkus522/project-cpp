@@ -8,17 +8,19 @@
 using namespace sf;
 using namespace std;
 
-Button::Button(Vector2f position, Vector2f size, string text)
+Button::Button(Vector2f position, Vector2f size, string text, void (*function)(const GuiElement*))
 {
     this->position = position;
     this->size = size;
     this->text = text;
+    this->function = function;
     this->rect = Rect<float>(position, size);
 }
 
-bool Button::isClicked(Vector2f position) const
+void Button::click(Vector2f position) const
 {
-    return rect.contains(position) && isEnabled;
+    if (rect.contains(position) && isEnabled)
+        function(this);
 }
 
 void Button::draw(RenderTarget &target, RenderStates states) const

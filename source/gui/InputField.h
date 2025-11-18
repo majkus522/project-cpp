@@ -2,12 +2,13 @@
 #define PROJECT_CPP_INPUTFIELD_H
 
 #include <string>
+#include "Clickable.h"
 #include "GuiElement.h"
 
 using namespace sf;
 using namespace std;
 
-class InputField : public GuiElement
+class InputField : public GuiElement, public Clickable
 {
     protected:
         string text;
@@ -15,8 +16,8 @@ class InputField : public GuiElement
         void draw(RenderTarget& target, RenderStates states) const override;
 
     public:
-        InputField(Vector2f position, Vector2f size);
-        bool isClicked(Vector2f position) const;
+        InputField(Vector2f position, Vector2f size, void (*function)(const GuiElement*));
+        void click(Vector2f position) const override;
         virtual void setText(string text);
 };
 

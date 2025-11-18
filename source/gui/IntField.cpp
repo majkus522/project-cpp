@@ -4,7 +4,7 @@
 
 using namespace std;
 
-IntField::IntField(Vector2f position, Vector2f size, int min, int max) : InputField(position, size)
+IntField::IntField(Vector2f position, Vector2f size, int min, int max, void (*function)(const GuiElement*)) : InputField(position, size, function)
 {
     this->min = min;
     this->max = max;
