@@ -32,6 +32,11 @@ void InputField::setText(string text)
     this->text += text;
 }
 
+string InputField::getText()
+{
+    return this->text;
+}
+
 void InputField::draw(RenderTarget &target, RenderStates states) const
 {
     RectangleShape rectangle;

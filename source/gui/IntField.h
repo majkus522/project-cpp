@@ -10,8 +10,9 @@ class IntField : public InputField
         int max;
 
     public:
-        IntField(Vector2f position, Vector2f size, int min, int max, void (*function)(const GuiElement*));
+        IntField(Vector2f position, Vector2f size, int min, int max, void (*function)(const GuiElement*), int value = 0);
         void setText(string text) override;
+        int getValue();
 };
 
 #endif

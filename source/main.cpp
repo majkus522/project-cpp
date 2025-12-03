@@ -28,6 +28,8 @@ void setEnabledAll(bool value)
 void createSimulation(const GuiElement * element)
 {
     guiElements["buttonStart"]->setEnabled(true);
+    Settings::sizeX = ((IntField*)guiElements["fieldSizeX"])->getValue();
+    Settings::sizeY = ((IntField*)guiElements["fieldSizeY"])->getValue();
     organism = new Organism();
     if (simulation != nullptr)
         simulation->close();
@@ -65,13 +67,13 @@ int main()
     RenderWindow window(VideoMode(500, 800), "Simulation - Config");
     timer.restart();
 
-    guiElements.insert({"buttonStart", (GuiElement*)new Button({100, 100}, {200, 50}, "Start", startSimulation)});
+    guiElements.insert({"buttonStart", new Button({100, 100}, {200, 50}, "Start", startSimulation)});
     guiElements["buttonStart"]->setEnabled(false);
     guiElements.insert({"buttonStop", new Button({100, 200}, {200, 50}, "Stop", stopSimulation)});
     guiElements["buttonStop"]->setEnabled(false);
     guiElements.insert({"buttonTick", new Button({100, 300}, {200, 50}, "Tick", tick)});
-    guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus)});
-    guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus, 15)});
+    guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
     bool lockClick = false;
     bool lockInput = false;

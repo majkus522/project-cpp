@@ -3,6 +3,7 @@
 #include "SickCell.h"
 #include "NormalCell.h"
 #include "Organism.h"
+#include <cmath>
 #include "../Settings.h"
 
 using namespace sf;
@@ -19,7 +20,7 @@ Organism::Organism()
         }
         cells.push_back(row);
     }
-    cells[7][7] = new SickCell(this, Vector2i(7,7));
+    cells[ceil(Settings::sizeY / 2)][ceil(Settings::sizeX / 2)] = new SickCell(this, Vector2i(ceil(Settings::sizeX / 2),ceil(Settings::sizeY / 2)));
     newCells = cells;
 }
 
