@@ -7,26 +7,38 @@
 #include "gui/InputField.h"
 #include "gui/IntField.h"
 #include "simulation/Organism.h"
+#include <map>
+#include <string>
 
 using namespace sf;
 
-vector<GuiElement*> guiElements;
+map<string, GuiElement*> guiElements;
 bool isRunning = false;
 Organism *organism;
 Clock timer;
 InputField *focus = nullptr;
+RenderWindow* simulation = nullptr;
 
 void setEnabledAll(bool value)
 {
-    for (GuiElement * element : guiElements)
-        element->setEnabled(value);
+    for (pair element : guiElements)
+        element.second->setEnabled(value);
+}
+
+void createSimulation(const GuiElement * element)
+{
+    guiElements["buttonStart"]->setEnabled(true);
+    organism = new Organism();
+    if (simulation != nullptr)
+        simulation->close();
+    simulation = new RenderWindow(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation");
 }
 
 void startSimulation(const GuiElement * element)
 {
     isRunning = true;
     setEnabledAll(false);
-    guiElements[1]->setEnabled(true);
+    guiElements["buttonStop"]->setEnabled(true);
     timer.restart();
 }
 
@@ -34,7 +46,7 @@ void stopSimulation(const GuiElement * element)
 {
     isRunning = false;
     setEnabledAll(true);
-    guiElements[1]->setEnabled(false);
+    guiElements["buttonStop"]->setEnabled(false);
 }
 
 void setFocus(const GuiElement * element)
@@ -51,15 +63,16 @@ void tick(const GuiElement * element)
 int main()
 {
     RenderWindow window(VideoMode(500, 800), "Simulation - Config");
-    RenderWindow simulation(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation");
     timer.restart();
-    organism = new Organism();
 
-    guiElements.push_back(new Button({100, 100}, {200, 50}, "Start", startSimulation));
-    guiElements.push_back(new Button({100, 200}, {200, 50}, "Stop", stopSimulation));
-    guiElements[1]->setEnabled(false);
-    guiElements.push_back(new Button({100, 300}, {200, 50}, "Tick", tick));
-    guiElements.push_back(new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus));
+    guiElements.insert({"buttonStart", (GuiElement*)new Button({100, 100}, {200, 50}, "Start", startSimulation)});
+    guiElements["buttonStart"]->setEnabled(false);
+    guiElements.insert({"buttonStop", new Button({100, 200}, {200, 50}, "Stop", stopSimulation)});
+    guiElements["buttonStop"]->setEnabled(false);
+    guiElements.insert({"buttonTick", new Button({100, 300}, {200, 50}, "Tick", tick)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus)});
+    guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus)});
+    guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
     bool lockClick = false;
     bool lockInput = false;
 
@@ -70,14 +83,15 @@ int main()
             if (event.type == Event::Closed)
             {
                 window.close();
-                simulation.close();
+                simulation->close();
             }
-        while (simulation.pollEvent(event))
-            if (event.type == Event::Closed)
-            {
-                window.close();
-                simulation.close();
-            }
+        if (simulation != nullptr)
+            while (simulation->pollEvent(event))
+                if (event.type == Event::Closed)
+                {
+                    window.close();
+                    simulation->close();
+                }
 
         if (event.type == Event::MouseButtonPressed)
         {
@@ -85,14 +99,14 @@ int main()
             {
                 lockClick = true;
                 Vector2i localPosition = Mouse::getPosition(window);
-                for (GuiElement * element : guiElements)
+                for (pair element : guiElements)
                 {
-                    if (dynamic_cast<Clickable*>(element))
+                    if (dynamic_cast<Clickable*>(element.second))
                     {
-                        if (dynamic_cast<Button*>(element))
-                            ((Button*)element)->click((Vector2f)localPosition);
-                        else if (dynamic_cast<InputField*>(element))
-                            ((InputField*)element)->click((Vector2f)localPosition);
+                        if (dynamic_cast<Button*>(element.second))
+                            ((Button*)element.second)->click((Vector2f)localPosition);
+                        else if (dynamic_cast<InputField*>(element.second))
+                            ((InputField*)element.second)->click((Vector2f)localPosition);
                     }
                 }
             }
@@ -114,18 +128,20 @@ int main()
         {
             lockInput = false;
         }
-
         window.clear();
-        simulation.clear();
+        if (simulation != nullptr)
+            simulation->clear();
         if(timer.getElapsedTime() >= Settings::delay && isRunning)
         {
             tick(nullptr);
         }
-        organism->drawGrid(&simulation);
-        for (GuiElement * element : guiElements)
-            window.draw(*element);
+        if (simulation != nullptr)
+            organism->drawGrid(simulation);
+        for (pair element : guiElements)
+            window.draw(*element.second);
         window.display();
-        simulation.display();
+        if (simulation != nullptr)
+            simulation->display();
     }
     return 0;
 }
