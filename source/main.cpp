@@ -33,7 +33,7 @@ void createSimulation(const GuiElement * element)
     organism = new Organism();
     if (simulation != nullptr)
         simulation->close();
-    simulation = new RenderWindow(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation");
+    simulation = new RenderWindow(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation", sf::Style::Titlebar | sf::Style::Close);
 }
 
 void startSimulation(const GuiElement * element)
