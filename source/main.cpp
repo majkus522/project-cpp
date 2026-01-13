@@ -30,6 +30,7 @@ void setEnabledAll(bool value)
 void createSimulation(const GuiElement * element)
 {
     guiElements["buttonStart"]->setEnabled(true);
+    guiElements["buttonTick"]->setEnabled(true);
     Settings::sizeX = ((IntField*)guiElements["fieldSizeX"])->getValue();
     Settings::sizeY = ((IntField*)guiElements["fieldSizeY"])->getValue();
     organism = new Organism();
@@ -74,6 +75,7 @@ int main()
     guiElements.insert({"buttonStop", new Button({100, 200}, {200, 50}, "Stop", stopSimulation)});
     guiElements["buttonStop"]->setEnabled(false);
     guiElements.insert({"buttonTick", new Button({100, 300}, {200, 50}, "Tick", tick)});
+    guiElements["buttonTick"]->setEnabled(false);
     guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
@@ -93,6 +95,9 @@ int main()
             {
                 simulation->close();
                 simulation = nullptr;
+                guiElements["buttonStart"]->setEnabled(false);
+                guiElements["buttonStop"]->setEnabled(false);
+                guiElements["buttonTick"]->setEnabled(false);
             }
         }
 
