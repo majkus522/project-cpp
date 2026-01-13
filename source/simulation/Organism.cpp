@@ -8,28 +8,27 @@
 
 using namespace sf;
 
-Organism::Organism()
+Organism::Organism(Vector2i size) : size(size)
 {
     cells = {};
-    for (int y = 0; y < Settings::sizeY; y++)
+    for (int y = 0; y < size.y; y++)
     {
         vector<Cell*> row;
-        for (int x = 0; x < Settings::sizeX; x++)
+        for (int x = 0; x < size.x; x++)
         {
             row.push_back(new NormalCell());
         }
         cells.push_back(row);
     }
-    cells[ceil(Settings::sizeY / 2)][ceil(Settings::sizeX / 2)] = new SickCell(this, Vector2i(ceil(Settings::sizeX / 2),ceil(Settings::sizeY / 2)));
+    cells[ceil(size.y / 2)][ceil(size.x / 2)] = new SickCell(this, Vector2i(ceil(size.x / 2),ceil(size.y / 2)));
     newCells = cells;
 }
 
 void Organism::drawGrid(RenderWindow *window)
 {
-    Vector2u size = window->getSize();
-    for (int y = 0; y < Settings::sizeY; y++)
+    for (int y = 0; y < size.y; y++)
     {
-        for (int x = 0; x < Settings::sizeX; x++)
+        for (int x = 0; x < size.x; x++)
         {
             RectangleShape shape({Settings::gridSize, Settings::gridSize});
             shape.setPosition(x * Settings::gridSize + (x + 1) * Settings::padding, y * Settings::gridSize + (y + 1) * Settings::padding);
@@ -41,9 +40,9 @@ void Organism::drawGrid(RenderWindow *window)
 
 void Organism::tick()
 {
-    for (int y = 0; y < Settings::sizeY; y++)
+    for (int y = 0; y < size.y; y++)
     {
-        for (int x = 0; x < Settings::sizeX; x++)
+        for (int x = 0; x < size.x; x++)
         {
             cells[y][x]->tick();
         }
@@ -53,14 +52,14 @@ void Organism::tick()
 
 void Organism::editCell(Vector2i position, Cell *newState)
 {
-    if (position.x < 0 || position.x >= Settings::sizeX || position.y < 0 || position.y >= Settings::sizeY)
+    if (position.x < 0 || position.x >= size.x || position.y < 0 || position.y >= size.y)
         return;
     newCells[position.y][position.x] = newState;
 }
 
 bool Organism::canInfect(Vector2i position) const
 {
-    if (position.x < 0 || position.x >= Settings::sizeX || position.y < 0 || position.y >= Settings::sizeY)
+    if (position.x < 0 || position.x >= size.x || position.y < 0 || position.y >= size.y)
         return false;
     return dynamic_cast<NormalCell*>(cells[position.y][position.x]);
 }

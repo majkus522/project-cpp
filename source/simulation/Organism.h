@@ -10,7 +10,7 @@ using namespace std;
 class Organism
 {
     public:
-        Organism();
+        Organism(Vector2i size);
         void drawGrid(RenderWindow *window);
         void tick();
         void editCell(Vector2i position, Cell *newState);
@@ -19,6 +19,7 @@ class Organism
     private:
         vector<vector<Cell*>> cells;
         vector<vector<Cell*>> newCells;
+        Vector2i size;
 };
 
 #endif

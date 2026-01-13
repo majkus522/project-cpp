@@ -9,8 +9,6 @@ using namespace sf;
 class Settings
 {
     public:
-        static int sizeX;
-        static int sizeY;
         static int timeSick;
         static int timeResistant;
         static float spreadChance;

@@ -27,16 +27,21 @@ void setEnabledAll(bool value)
         element.second->setEnabled(value);
 }
 
+unsigned int calcSize(int a)
+{
+    return a * Settings::gridSize + (a + 1) * Settings::padding;
+}
+
 void createSimulation(const GuiElement * element)
 {
     guiElements["buttonStart"]->setEnabled(true);
     guiElements["buttonTick"]->setEnabled(true);
-    Settings::sizeX = ((IntField*)guiElements["fieldSizeX"])->getValue();
-    Settings::sizeY = ((IntField*)guiElements["fieldSizeY"])->getValue();
-    organism = new Organism();
+    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
+    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+    organism = new Organism({x, y});
     if (simulation != nullptr)
         simulation->close();
-    simulation = new RenderWindow(VideoMode(Settings::sizeX * Settings::gridSize + (Settings::sizeX + 1) * Settings::padding, Settings::sizeY * Settings::gridSize + (Settings::sizeY + 1) * Settings::padding), "Simulation", sf::Style::Titlebar | sf::Style::Close);
+    simulation = new RenderWindow(VideoMode(calcSize(x), calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
 }
 
 void startSimulation(const GuiElement * element)
