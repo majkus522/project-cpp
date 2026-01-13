@@ -80,22 +80,16 @@ int main()
 
     while (window.isOpen())
     {
+        //Check events
         Event event;
-        while (window.pollEvent(event))
-            if (event.type == Event::Closed)
-            {
-                window.close();
+        window.pollEvent(event);
+        if (event.type == Event::Closed)
+        {
+            window.close();
+            if (simulation != nullptr)
                 simulation->close();
-            }
-        if (simulation != nullptr)
-            while (simulation->pollEvent(event))
-                if (event.type == Event::Closed)
-                {
-                    window.close();
-                    simulation->close();
-                }
-
-        if (event.type == Event::MouseButtonPressed)
+        }
+        else if (event.type == Event::MouseButtonPressed)
         {
             if (event.mouseButton.button == Mouse::Left && !lockClick)
             {
@@ -130,13 +124,15 @@ int main()
         {
             lockInput = false;
         }
+
+        //Tick simulation
+        if(timer.getElapsedTime() >= Settings::delay && isRunning)
+            tick(nullptr);
+
+        //Redraw window
         window.clear();
         if (simulation != nullptr)
             simulation->clear();
-        if(timer.getElapsedTime() >= Settings::delay && isRunning)
-        {
-            tick(nullptr);
-        }
         if (simulation != nullptr)
             organism->drawGrid(simulation);
         for (pair element : guiElements)
