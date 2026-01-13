@@ -9,8 +9,10 @@
 #include "simulation/Organism.h"
 #include <map>
 #include <string>
+#include <iostream>
 
 using namespace sf;
+using namespace std;
 
 map<string, GuiElement*> guiElements;
 bool isRunning = false;
@@ -78,20 +80,33 @@ int main()
     bool lockClick = false;
     bool lockInput = false;
 
+    Event simulationEvent;
+    Event windowEvent;
+
     while (window.isOpen())
     {
-        //Check events
-        Event event;
-        window.pollEvent(event);
-        if (event.type == Event::Closed)
+        //Check events - simulation
+        if (simulation != nullptr)
+        {
+            simulation->pollEvent(simulationEvent);
+            if (simulationEvent.type == Event::Closed)
+            {
+                simulation->close();
+                simulation = nullptr;
+            }
+        }
+
+        //Check events - window
+        window.pollEvent(windowEvent);
+        if (windowEvent.type == Event::Closed)
         {
             window.close();
             if (simulation != nullptr)
                 simulation->close();
         }
-        else if (event.type == Event::MouseButtonPressed)
+        else if (windowEvent.type == Event::MouseButtonPressed)
         {
-            if (event.mouseButton.button == Mouse::Left && !lockClick)
+            if (windowEvent.mouseButton.button == Mouse::Left && !lockClick)
             {
                 lockClick = true;
                 Vector2i localPosition = Mouse::getPosition(window);
@@ -107,20 +122,20 @@ int main()
                 }
             }
         }
-        else if (event.type == sf::Event::MouseButtonReleased && event.mouseButton.button == sf::Mouse::Left)
+        else if (windowEvent.type == sf::Event::MouseButtonReleased && windowEvent.mouseButton.button == sf::Mouse::Left)
         {
             lockClick = false;
         }
-        else if (event.type == Event::TextEntered && !lockInput && focus != nullptr)
+        else if (windowEvent.type == Event::TextEntered && !lockInput && focus != nullptr)
         {
-            if (event.text.unicode < 128)
+            if (windowEvent.text.unicode < 128)
             {
                 lockInput = true;
-                sf::String input = static_cast<char>(event.text.unicode);
+                sf::String input = static_cast<char>(windowEvent.text.unicode);
                 focus->setText(input);
             }
         }
-        else if (event.type == Event::KeyReleased)
+        else if (windowEvent.type == Event::KeyReleased)
         {
             lockInput = false;
         }
