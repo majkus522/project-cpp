@@ -64,7 +64,7 @@ void tick(const GuiElement * element)
 
 int main()
 {
-    RenderWindow window(VideoMode(500, 800), "Simulation - Config");
+    RenderWindow window(VideoMode(500, 800), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({100, 100}, {200, 50}, "Start", startSimulation)});
