@@ -15,6 +15,7 @@ Button::Button(Vector2f position, Vector2f size, string text, void (*function)(c
     this->text = text;
     this->function = function;
     this->rect = Rect<float>(position, size);
+    font.loadFromFile("arial.ttf");
 }
 
 void Button::click(Vector2f position) const
@@ -33,8 +34,6 @@ void Button::draw(RenderTarget &target, RenderStates states) const
     rectangle.setOutlineThickness(3);
     target.draw(rectangle, states);
 
-    Font font;
-    font.loadFromFile("arial.ttf");
     Text textShape = Text(text, font);
     FloatRect textBounds = textShape.getLocalBounds();
     textShape.setOrigin(textBounds.left + textBounds.width / 2.0f,textBounds.top + textBounds.height / 2.0f);

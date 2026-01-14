@@ -13,6 +13,7 @@ class Button : public GuiElement, public Clickable
         string text;
         Rect<float> rect;
         void draw(RenderTarget& target, RenderStates states) const override;
+        Font font;
 
     public:
         Button(Vector2f position, Vector2f size, string text, void (*function)(const GuiElement*));

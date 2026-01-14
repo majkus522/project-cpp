@@ -2,10 +2,12 @@
 #define PROJECT_CPP_CELL_H
 
 #include <SFML/Graphics.hpp>
+#include <iostream>
 #include "../ColorGradient.h"
 #include "../Settings.h"
 
 using namespace sf;
+using namespace std;
 
 class Cell
 {

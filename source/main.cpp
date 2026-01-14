@@ -4,12 +4,16 @@
 #include <SFML/System/Time.hpp>
 #include "Settings.h"
 #include "gui/Button.h"
+#include "gui/TextElement.h"
 #include "gui/InputField.h"
 #include "gui/IntField.h"
 #include "simulation/Organism.h"
 #include <map>
 #include <string>
 #include <iostream>
+#include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Text.hpp>
 
 using namespace sf;
 using namespace std;
@@ -79,20 +83,25 @@ void resize(const GuiElement* element)
 
 int main()
 {
-    RenderWindow window(VideoMode(500, 800), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
+    RenderWindow window(VideoMode(550, 800), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
     timer.restart();
 
-    guiElements.insert({"buttonStart", new Button({100, 100}, {200, 50}, "Start", startSimulation)});
+    guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
     guiElements["buttonStart"]->setEnabled(false);
-    guiElements.insert({"buttonStop", new Button({100, 200}, {200, 50}, "Stop", stopSimulation)});
+    guiElements.insert({"buttonStop", new Button({200, 50}, {150, 50}, "Stop", stopSimulation)});
     guiElements["buttonStop"]->setEnabled(false);
-    guiElements.insert({"buttonTick", new Button({100, 300}, {200, 50}, "Tick", tick)});
+    guiElements.insert({"buttonTick", new Button({350, 50}, {150, 50}, "Tick", tick)});
     guiElements["buttonTick"]->setEnabled(false);
-    guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus, 15)});
-    guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus, 15)});
-    guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
-    guiElements.insert({"buttonResize", new Button({100, 650}, {200, 50}, "Resize", resize)});
+
+    guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
+    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, -1000, 1000, setFocus, 15)});
+    guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
+    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, -1000, 1000, setFocus, 15)});
+
+    guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
+    guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
     guiElements["buttonResize"]->setEnabled(false);
+
     bool lockClick = false;
     bool lockInput = false;
 
