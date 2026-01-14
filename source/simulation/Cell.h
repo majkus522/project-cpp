@@ -17,7 +17,7 @@ class Cell
     public:
         Cell();
         Color getColor();
-        virtual void tick() = 0;
+        virtual void tick(Vector2i position) = 0;
 };
 
 #endif

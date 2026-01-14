@@ -7,7 +7,7 @@ class NormalCell : public Cell
 {
     public:
         NormalCell();
-        void tick() override;
+        void tick(Vector2i position) override;
 };
 
 #endif

@@ -23,13 +23,8 @@ RenderWindow* simulation = nullptr;
 
 void setEnabledAll(bool value)
 {
-    for (pair element : guiElements)
+    for (pair<string, GuiElement*> element : guiElements)
         element.second->setEnabled(value);
-}
-
-unsigned int calcSize(int a)
-{
-    return a * Settings::gridSize + (a + 1) * Settings::padding;
 }
 
 void createSimulation(const GuiElement * element)
@@ -38,10 +33,10 @@ void createSimulation(const GuiElement * element)
     guiElements["buttonTick"]->setEnabled(true);
     int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
     int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
-    organism = new Organism({x, y});
     if (simulation != nullptr)
         simulation->close();
-    simulation = new RenderWindow(VideoMode(calcSize(x), calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
+    simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
+    organism = new Organism({ x, y }, simulation);
 }
 
 void startSimulation(const GuiElement * element)
@@ -70,6 +65,14 @@ void tick(const GuiElement * element)
     timer.restart();
 }
 
+void resize(const GuiElement* element)
+{
+    organism->resize({ 7, 7 });
+    simulation->close();
+    simulation = new RenderWindow(VideoMode(Organism::calcSize(20), Organism::calcSize(15)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
+    organism->window = simulation;
+}
+
 int main()
 {
     RenderWindow window(VideoMode(500, 800), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
@@ -84,6 +87,7 @@ int main()
     guiElements.insert({"fieldSizeX", new IntField({100, 400}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
+    guiElements.insert({"buttonResize", new Button({100, 650}, {200, 50}, "Resize", resize)});
     bool lockClick = false;
     bool lockInput = false;
 
@@ -120,7 +124,7 @@ int main()
             {
                 lockClick = true;
                 Vector2i localPosition = Mouse::getPosition(window);
-                for (pair element : guiElements)
+                for (pair<string, GuiElement*> element : guiElements)
                 {
                     if (dynamic_cast<Clickable*>(element.second))
                     {
@@ -159,8 +163,8 @@ int main()
         if (simulation != nullptr)
             simulation->clear();
         if (simulation != nullptr)
-            organism->drawGrid(simulation);
-        for (pair element : guiElements)
+            organism->drawGrid();
+        for (pair<string, GuiElement*> element : guiElements)
             window.draw(*element.second);
         window.display();
         if (simulation != nullptr)

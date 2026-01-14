@@ -10,8 +10,8 @@ class ResistantCell : public Cell
         Vector2i position;
 
     public:
-        ResistantCell(Organism *parent, Vector2i position);
-        void tick() override;
+        ResistantCell(Organism *parent);
+        void tick(Vector2i position) override;
 };
 
 #endif

@@ -7,4 +7,4 @@ NormalCell::NormalCell()
     this->state = 3;
 }
 
-void NormalCell::tick() { }
+void NormalCell::tick(Vector2i position) { }

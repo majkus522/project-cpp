@@ -11,8 +11,8 @@ class SickCell : public Cell
         Vector2i position;
 
     public:
-        SickCell(Organism *parent, Vector2i position);
-        void tick() override;
+        SickCell(Organism *parent);
+        void tick(Vector2i position) override;
 };
 
 #endif

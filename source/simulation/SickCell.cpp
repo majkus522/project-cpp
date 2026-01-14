@@ -13,16 +13,15 @@ float randomFloat()
     return dist(gen);
 }
 
-SickCell::SickCell(Organism *parent, Vector2i position)
+SickCell::SickCell(Organism *parent)
 {
     this->organism = parent;
-    this->position = position;
     this->state = 0;
     this->maxState = Settings::timeSick;
     this->gradient = ColorGradient(Settings::colorSick, Settings::colorSick);
 }
 
-void SickCell::tick()
+void SickCell::tick(Vector2i position)
 {
     this->state += 1;
     for (int y = -1; y <= 1; y++)
@@ -32,11 +31,11 @@ void SickCell::tick()
             if (x != 0 || y != 0)
                 if (organism->canInfect(position + Vector2i(x, y)))
                     if (randomFloat() < Settings::spreadChance)
-                        organism->editCell(position + Vector2i(x, y), new SickCell(organism, position + Vector2i(x, y)));
+                        organism->editCell(position + Vector2i(x, y), new SickCell(organism));
         }
     }
     if (state >= maxState)
     {
-        organism->editCell(position, new ResistantCell(organism, position));
+        organism->editCell(position, new ResistantCell(organism));
     }
 }
