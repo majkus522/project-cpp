@@ -30,6 +30,7 @@ void initSettings()
     Settings::timeSick = ((IntField*)guiElements["fieldTimeSick"])->getValue();
     Settings::timeResistant = ((IntField*)guiElements["fieldTimeRes"])->getValue();
     Settings::spreadChance = ((IntField*)guiElements["fieldPercent"])->getValue() / 100.0f;
+    Settings::delay = seconds(((IntField*)guiElements["fieldTime"])->getValue() / 1000.0f);
 }
 
 void setEnabledAll(bool value)
@@ -118,6 +119,8 @@ int main()
     guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 1, 100, setFocus, 2) });
     guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
     guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
+    guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay:") });
+    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 1, 10000, setFocus, 1000) });
 
     bool lockClick = false;
     bool lockInput = false;
