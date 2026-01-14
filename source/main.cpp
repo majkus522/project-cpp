@@ -37,6 +37,8 @@ void createSimulation(const GuiElement * element)
         simulation->close();
     simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
     organism = new Organism({ x, y }, simulation);
+    guiElements["buttonCreate"]->setEnabled(false);
+    guiElements["buttonResize"]->setEnabled(true);
 }
 
 void startSimulation(const GuiElement * element)
@@ -67,9 +69,11 @@ void tick(const GuiElement * element)
 
 void resize(const GuiElement* element)
 {
-    organism->resize({ 7, 7 });
+    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
+    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+    organism->resize({ x, y });
     simulation->close();
-    simulation = new RenderWindow(VideoMode(Organism::calcSize(20), Organism::calcSize(15)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
+    simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
     organism->window = simulation;
 }
 
@@ -88,6 +92,7 @@ int main()
     guiElements.insert({"fieldSizeY", new IntField({100, 450}, {200, 50}, -1000, 1000, setFocus, 15)});
     guiElements.insert({"buttonCreate", new Button({100, 550}, {200, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({100, 650}, {200, 50}, "Resize", resize)});
+    guiElements["buttonResize"]->setEnabled(false);
     bool lockClick = false;
     bool lockInput = false;
 
@@ -107,6 +112,8 @@ int main()
                 guiElements["buttonStart"]->setEnabled(false);
                 guiElements["buttonStop"]->setEnabled(false);
                 guiElements["buttonTick"]->setEnabled(false);
+                guiElements["buttonCreate"]->setEnabled(true);
+                guiElements["buttonResize"]->setEnabled(false);
             }
         }
 
