@@ -29,6 +29,7 @@ void initSettings()
 {
     Settings::timeSick = ((IntField*)guiElements["fieldTimeSick"])->getValue();
     Settings::timeResistant = ((IntField*)guiElements["fieldTimeRes"])->getValue();
+    Settings::spreadChance = ((IntField*)guiElements["fieldPercent"])->getValue() / 100.0f;
 }
 
 void setEnabledAll(bool value)
@@ -112,9 +113,11 @@ int main()
     guiElements["buttonResize"]->setEnabled(false);
 
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
-    guiElements.insert({ "fieldTimeSick", new IntField({250, 400}, {100, 50}, 1, 100, setFocus, 6) });
+    guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 1, 100, setFocus, 6) });
     guiElements.insert({ "textTimeRes", new TextElement({50, 450}, {200, 50}, "Time resistant:") });
-    guiElements.insert({ "fieldTimeRes", new IntField({250, 450}, {100, 50}, 1, 100, setFocus, 2) });
+    guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 1, 100, setFocus, 2) });
+    guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
+    guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
 
     bool lockClick = false;
     bool lockInput = false;
@@ -137,6 +140,11 @@ int main()
                 guiElements["buttonTick"]->setEnabled(false);
                 guiElements["buttonCreate"]->setEnabled(true);
                 guiElements["buttonResize"]->setEnabled(false);
+                guiElements["fieldSizeX"]->setEnabled(true);
+                guiElements["fieldSizeY"]->setEnabled(true);
+                guiElements["fieldTimeSick"]->setEnabled(true);
+                guiElements["fieldTimeRes"]->setEnabled(true);
+                guiElements["fieldPercent"]->setEnabled(true);
             }
         }
 
