@@ -21,8 +21,8 @@ void TextElement::draw(RenderTarget& target, RenderStates states) const
 {
     Text textShape = Text(text, font);
     FloatRect textBounds = textShape.getLocalBounds();
-    textShape.setOrigin(textBounds.left + textBounds.width / 2.0f, textBounds.top + textBounds.height / 2.0f);
-    Vector2f rectCenter(rect.getPosition().x + rect.getSize().x / 2.0f, rect.getPosition().y + rect.getSize().y / 2.0f);
+    textShape.setOrigin(textBounds.left, textBounds.top + textBounds.height / 2.0f);
+    Vector2f rectCenter(rect.getPosition().x, rect.getPosition().y + rect.getSize().y / 2.0f);
     textShape.setPosition(rectCenter);
     textShape.setCharacterSize(30);
     textShape.setFillColor(Color::Red);

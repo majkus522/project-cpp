@@ -17,7 +17,6 @@ SickCell::SickCell(Organism *parent)
 {
     this->organism = parent;
     this->state = 0;
-    this->maxState = Settings::timeSick;
     this->gradient = ColorGradient(Settings::colorSick, Settings::colorSick);
 }
 
@@ -34,7 +33,7 @@ void SickCell::tick(Vector2i position)
                         organism->editCell(position + Vector2i(x, y), new SickCell(organism));
         }
     }
-    if (state >= maxState)
+    if (state >= Settings::timeSick)
     {
         organism->editCell(position, new ResistantCell(organism));
     }

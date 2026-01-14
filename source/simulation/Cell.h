@@ -13,7 +13,6 @@ class Cell
 {
     protected:
         int state;
-        int maxState;
         ColorGradient gradient = ColorGradient(Settings::colorNormal, Settings::colorNormal);
 
     public:

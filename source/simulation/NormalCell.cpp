@@ -3,8 +3,7 @@
 
 NormalCell::NormalCell()
 {
-    this->maxState = 3;
-    this->state = 3;
+    this->state = 0;
 }
 
 void NormalCell::tick(Vector2i position) { }

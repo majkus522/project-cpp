@@ -25,6 +25,12 @@ Clock timer;
 InputField *focus = nullptr;
 RenderWindow* simulation = nullptr;
 
+void initSettings()
+{
+    Settings::timeSick = ((IntField*)guiElements["fieldTimeSick"])->getValue();
+    Settings::timeResistant = ((IntField*)guiElements["fieldTimeRes"])->getValue();
+}
+
 void setEnabledAll(bool value)
 {
     for (pair<string, GuiElement*> element : guiElements)
@@ -47,6 +53,7 @@ void createSimulation(const GuiElement * element)
 
 void startSimulation(const GuiElement * element)
 {
+    initSettings();
     isRunning = true;
     setEnabledAll(false);
     guiElements["buttonStop"]->setEnabled(true);
@@ -58,6 +65,7 @@ void stopSimulation(const GuiElement * element)
     isRunning = false;
     setEnabledAll(true);
     guiElements["buttonStop"]->setEnabled(false);
+    guiElements["buttonCreate"]->setEnabled(false);
 }
 
 void setFocus(const GuiElement * element)
@@ -67,6 +75,7 @@ void setFocus(const GuiElement * element)
 
 void tick(const GuiElement * element)
 {
+    initSettings();
     organism->tick();
     timer.restart();
 }
@@ -94,13 +103,18 @@ int main()
     guiElements["buttonTick"]->setEnabled(false);
 
     guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
-    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, -1000, 1000, setFocus, 15)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 1, 100, setFocus, 15)});
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
-    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, -1000, 1000, setFocus, 15)});
+    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 1, 100, setFocus, 15)});
 
     guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
     guiElements["buttonResize"]->setEnabled(false);
+
+    guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
+    guiElements.insert({ "fieldTimeSick", new IntField({250, 400}, {100, 50}, 1, 100, setFocus, 6) });
+    guiElements.insert({ "textTimeRes", new TextElement({50, 450}, {200, 50}, "Time resistant:") });
+    guiElements.insert({ "fieldTimeRes", new IntField({250, 450}, {100, 50}, 1, 100, setFocus, 2) });
 
     bool lockClick = false;
     bool lockInput = false;
