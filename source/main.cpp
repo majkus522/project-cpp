@@ -94,7 +94,7 @@ void resize(const GuiElement* element)
 
 int main()
 {
-    RenderWindow window(VideoMode(550, 800), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
+    RenderWindow window(VideoMode(550, 650), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
@@ -119,7 +119,7 @@ int main()
     guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 1, 100, setFocus, 2) });
     guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
     guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
-    guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay:") });
+    guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay [ms]:") });
     guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 1, 10000, setFocus, 1000) });
 
     bool lockClick = false;
@@ -148,6 +148,7 @@ int main()
                 guiElements["fieldTimeSick"]->setEnabled(true);
                 guiElements["fieldTimeRes"]->setEnabled(true);
                 guiElements["fieldPercent"]->setEnabled(true);
+                isRunning = false;
             }
         }
 
