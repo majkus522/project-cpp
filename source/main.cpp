@@ -106,9 +106,9 @@ int main()
     //guiElements["buttonTick"]->setEnabled(false);
 
     guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
-    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 500, setFocus, 100)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 1000, setFocus, 100)});
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
-    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 500, setFocus, 100)});
+    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 100)});
 
     guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
@@ -200,7 +200,7 @@ int main()
         //Tick simulation
         if(timer.getElapsedTime() >= Settings::delay && isRunning)
         {
-            cout << timer.getElapsedTime().asMilliseconds() << endl;
+            //cout << timer.getElapsedTime().asMilliseconds() << endl;
             tick();
         }
 

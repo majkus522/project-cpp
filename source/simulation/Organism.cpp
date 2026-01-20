@@ -1,6 +1,8 @@
 #include <SFML/Graphics.hpp>
 #include "Organism.h"
 #include <cmath>
+#include <iostream>
+
 #include "../Settings.h"
 #include <random>
 
@@ -18,6 +20,17 @@ float randomFloat()
     static std::mt19937 gen(rd());
     static std::uniform_real_distribution<float> dist(0.0f, 1.0f);
     return dist(gen);
+}
+
+void color(int x, int y, Color color, Image& image)
+{
+    for (int dx = 0; dx < Settings::gridSize; dx++)
+    {
+        for (int dy = 0; dy < Settings::gridSize; dy++)
+        {
+            image.setPixel(x * Settings::gridSize + dx, y * Settings::gridSize + dy, color);
+        }
+    }
 }
 
 Organism::Organism(Vector2i size, RenderWindow* window) : size(size), window(window)
@@ -38,21 +51,24 @@ Organism::Organism(Vector2i size, RenderWindow* window) : size(size), window(win
 
 void Organism::drawGrid()
 {
+    Image image;
+    image.create(calcSize(size.x), calcSize(size.y), Color(0, 100, 0));
     for (int y = 0; y < size.y; y++)
     {
         for (int x = 0; x < size.x; x++)
         {
-            RectangleShape shape({Settings::gridSize, Settings::gridSize});
-            shape.setPosition(x * Settings::gridSize + (x + 1) * Settings::padding, y * Settings::gridSize + (y + 1) * Settings::padding);
             if (cells[y][x] > 0)
-                shape.setFillColor(Settings::colorSick);
+                color(x, y, Settings::colorSick, image);
             else if (cells[y][x] < 0)
-                shape.setFillColor(Settings::colorResistant);
+                color(x, y, Settings::colorResistant, image);
             else
-                shape.setFillColor(Settings::colorNormal);
-            window->draw(shape);
+                color(x, y, Settings::colorNormal, image);
         }
     }
+    Texture texture;
+    texture.loadFromImage(image, IntRect(0, 0, calcSize(size.x), calcSize(size.y)));
+    Sprite bufferSprite(texture);
+    window->draw(bufferSprite);
 }
 
 void Organism::tick()
