@@ -112,15 +112,15 @@ void Organism::tick()
 
 void Organism::resize(Vector2i newSize)
 {
-    /*int diffX = floor((newSize.x - size.x) / 2);
+    int diffX = floor((newSize.x - size.x) / 2);
     int diffY = floor((newSize.y - size.y) / 2);
     newCells = {};
     for (int y = 0; y < newSize.y; y++)
     {
-        vector<Cell*> row;
+        vector<int> row;
         for (int x = 0; x < newSize.x; x++)
         {
-            row.push_back(new NormalCell());
+            row.push_back(0);
         }
         newCells.push_back(row);
     }
@@ -134,5 +134,5 @@ void Organism::resize(Vector2i newSize)
         }
     }
     cells = newCells;
-    size = newSize;*/
+    size = newSize;
 }
