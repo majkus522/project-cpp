@@ -1,11 +1,8 @@
 #include <SFML/Graphics.hpp>
-#include "Cell.h"
-#include "SickCell.h"
-#include "NormalCell.h"
 #include "Organism.h"
 #include <cmath>
-#include <iostream>
 #include "../Settings.h"
+#include <random>
 
 using namespace sf;
 using namespace std;
@@ -15,19 +12,27 @@ unsigned int Organism::calcSize(int a)
     return a * Settings::gridSize + (a + 1) * Settings::padding;
 }
 
+float randomFloat()
+{
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    static std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+    return dist(gen);
+}
+
 Organism::Organism(Vector2i size, RenderWindow* window) : size(size), window(window)
 {
     cells = {};
     for (int y = 0; y < size.y; y++)
     {
-        vector<Cell*> row;
+        vector<int> row;
         for (int x = 0; x < size.x; x++)
         {
-            row.push_back(new NormalCell());
+            row.push_back(0);
         }
         cells.push_back(row);
     }
-    cells[ceil(size.y / 2)][ceil(size.x / 2)] = new SickCell(this);
+    cells[ceil(size.y / 2)][ceil(size.x / 2)] = 1;
     newCells = cells;
 }
 
@@ -39,7 +44,12 @@ void Organism::drawGrid()
         {
             RectangleShape shape({Settings::gridSize, Settings::gridSize});
             shape.setPosition(x * Settings::gridSize + (x + 1) * Settings::padding, y * Settings::gridSize + (y + 1) * Settings::padding);
-            shape.setFillColor(cells[y][x]->getColor());
+            if (cells[y][x] > 0)
+                shape.setFillColor(Settings::colorSick);
+            else if (cells[y][x] < 0)
+                shape.setFillColor(Settings::colorResistant);
+            else
+                shape.setFillColor(Settings::colorNormal);
             window->draw(shape);
         }
     }
@@ -51,29 +61,42 @@ void Organism::tick()
     {
         for (int x = 0; x < size.x; x++)
         {
-            cells[y][x]->tick({x, y});
+            if (cells[y][x] > 0)
+            {
+                newCells[y][x] += 1;
+                for (int dy = -1; dy <= 1; dy++)
+                {
+                    for (int dx = -1; dx <= 1; dx++)
+                    {
+                        if (y + dy < 0 || y + dy >= size.y || x + dx < 0 || x + dx >= size.x)
+                            continue;
+                        if (dx != 0 || dy != 0)
+                            if (cells[y + dy][x + dx] == 0)
+                                if (randomFloat() < Settings::spreadChance)
+                                    newCells[y + dy][x + dx] = 1;
+                    }
+                }
+                if (cells[y][x] > Settings::timeSick)
+                {
+                    newCells[y][x] = -1;
+                }
+            }
+            else if (cells[y][x] < 0)
+            {
+                cells[y][x] -= 1;
+                if (cells[y][x] < Settings::timeResistant)
+                {
+                    newCells[y][x] = 0;
+                }
+            }
         }
     }
     cells = newCells;
 }
 
-void Organism::editCell(Vector2i position, Cell *newState)
-{
-    if (position.x < 0 || position.x >= size.x || position.y < 0 || position.y >= size.y)
-        return;
-    newCells[position.y][position.x] = newState;
-}
-
-bool Organism::canInfect(Vector2i position) const
-{
-    if (position.x < 0 || position.x >= size.x || position.y < 0 || position.y >= size.y)
-        return false;
-    return dynamic_cast<NormalCell*>(cells[position.y][position.x]);
-}
-
 void Organism::resize(Vector2i newSize)
 {
-    int diffX = floor((newSize.x - size.x) / 2);
+    /*int diffX = floor((newSize.x - size.x) / 2);
     int diffY = floor((newSize.y - size.y) / 2);
     newCells = {};
     for (int y = 0; y < newSize.y; y++)
@@ -95,5 +118,5 @@ void Organism::resize(Vector2i newSize)
         }
     }
     cells = newCells;
-    size = newSize;
+    size = newSize;*/
 }

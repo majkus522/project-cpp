@@ -20,7 +20,6 @@ void IntField::setText(string text)
         this->text = this->text.substr(0, this->text.length() - 1);
         if (this->text.length() == 0)
             this->text = "0";
-        return;
     }
     if (isdigit(text[0]))
         InputField::setText(text);

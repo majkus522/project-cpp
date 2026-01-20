@@ -11,6 +11,7 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include <thread>
 #include <SFML/Graphics/RectangleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -42,7 +43,7 @@ void setEnabledAll(bool value)
 void createSimulation(const GuiElement * element)
 {
     guiElements["buttonStart"]->setEnabled(true);
-    guiElements["buttonTick"]->setEnabled(true);
+    //guiElements["buttonTick"]->setEnabled(true);
     int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
     int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
     if (simulation != nullptr)
@@ -75,7 +76,7 @@ void setFocus(const GuiElement * element)
     focus = (InputField*)element;
 }
 
-void tick(const GuiElement * element)
+void tick()
 {
     initSettings();
     organism->tick();
@@ -101,13 +102,13 @@ int main()
     guiElements["buttonStart"]->setEnabled(false);
     guiElements.insert({"buttonStop", new Button({200, 50}, {150, 50}, "Stop", stopSimulation)});
     guiElements["buttonStop"]->setEnabled(false);
-    guiElements.insert({"buttonTick", new Button({350, 50}, {150, 50}, "Tick", tick)});
-    guiElements["buttonTick"]->setEnabled(false);
+    //guiElements.insert({"buttonTick", new Button({350, 50}, {150, 50}, "Tick", tick)});
+    //guiElements["buttonTick"]->setEnabled(false);
 
     guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
-    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 1, 100, setFocus, 15)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 500, setFocus, 100)});
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
-    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 1, 100, setFocus, 15)});
+    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 500, setFocus, 100)});
 
     guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
@@ -120,7 +121,7 @@ int main()
     guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
     guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
     guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay [ms]:") });
-    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 1, 10000, setFocus, 1000) });
+    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 50, 10000, setFocus, 1000) });
 
     bool lockClick = false;
     bool lockInput = false;
@@ -140,7 +141,7 @@ int main()
                 simulation = nullptr;
                 guiElements["buttonStart"]->setEnabled(false);
                 guiElements["buttonStop"]->setEnabled(false);
-                guiElements["buttonTick"]->setEnabled(false);
+                //guiElements["buttonTick"]->setEnabled(false);
                 guiElements["buttonCreate"]->setEnabled(true);
                 guiElements["buttonResize"]->setEnabled(false);
                 guiElements["fieldSizeX"]->setEnabled(true);
@@ -198,7 +199,10 @@ int main()
 
         //Tick simulation
         if(timer.getElapsedTime() >= Settings::delay && isRunning)
-            tick(nullptr);
+        {
+            cout << timer.getElapsedTime().asMilliseconds() << endl;
+            tick();
+        }
 
         //Redraw window
         window.clear();

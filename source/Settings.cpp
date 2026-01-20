@@ -5,9 +5,9 @@ using namespace sf;
 
 int Settings::timeSick = 6;
 int Settings::timeResistant = 2;
+float Settings::padding = 0.f;
 float Settings::spreadChance = 0.5f;
-float Settings::gridSize = 30.f;
-float Settings::padding = 5.f;
+float Settings::gridSize = 2.f;
 Time Settings::delay = seconds(1);
 Color Settings::colorNormal = Color::White;
 Color Settings::colorSick = Color::Red;
