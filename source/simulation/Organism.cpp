@@ -99,8 +99,8 @@ void Organism::tick()
             }
             else if (cells[y][x] < 0)
             {
-                cells[y][x] -= 1;
-                if (cells[y][x] < Settings::timeResistant)
+                newCells[y][x] -= 1;
+                if (cells[y][x] < -Settings::timeResistant)
                 {
                     newCells[y][x] = 0;
                 }
