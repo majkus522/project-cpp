@@ -12,7 +12,7 @@ IntField::IntField(Vector2f position, Vector2f size, int min, int max, void (*fu
     this->text = to_string(value);
 }
 
-void IntField::setText(string text)
+bool IntField::setText(string text)
 {
     text = text[0];
     if ((int)text[0] == 8)
@@ -21,11 +21,14 @@ void IntField::setText(string text)
         if (this->text.length() == 0)
             this->text = "0";
     }
+    else if ((int)text[0] == 13)
+        return true;
     if (isdigit(text[0]))
         InputField::setText(text);
     int value = atoi(this->text.c_str());
     value = std::min(max, std::max(min, value));
     this->text = to_string(value);
+    return false;
 }
 
 int IntField::getValue()

@@ -23,13 +23,16 @@ void InputField::click(Vector2f position) const
         function(this);
 }
 
-void InputField::setText(string text)
+bool InputField::setText(string text)
 {
     if ((int)text[0] == 8) {
         this->text = this->text.substr(1);
-        return;
+        return false;
     }
+    else if ((int)text[0] == 13)
+        return true;
     this->text += text;
+    return false;
 }
 
 string InputField::getText()

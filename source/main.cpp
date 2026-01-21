@@ -63,7 +63,6 @@ void setFocus(const GuiElement * element)
 
 void tick()
 {
-    initSettings();
     organism->tick();
     timer.restart();
 }
@@ -135,6 +134,8 @@ int main()
         {
             if (windowEvent.mouseButton.button == Mouse::Left && !lockClick)
             {
+                focus = nullptr;
+                initSettings();
                 lockClick = true;
                 Vector2i localPosition = Mouse::getPosition(window);
                 for (pair<string, GuiElement*> element : guiElements)
@@ -159,7 +160,11 @@ int main()
             {
                 lockInput = true;
                 sf::String input = static_cast<char>(windowEvent.text.unicode);
-                focus->setText(input);
+                if (focus->setText(input))
+                {
+                    focus = nullptr;
+                    initSettings();
+                }
             }
         }
         else if (windowEvent.type == Event::KeyReleased)

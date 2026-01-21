@@ -11,7 +11,7 @@ class IntField : public InputField
 
     public:
         IntField(Vector2f position, Vector2f size, int min, int max, void (*function)(const GuiElement*), int value = 0);
-        void setText(string text) override;
+        bool setText(string text) override;
         int getValue();
 };
 

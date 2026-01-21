@@ -11,7 +11,7 @@ using namespace std;
 
 unsigned int Organism::calcSize(int a)
 {
-    return a * Settings::gridSize + (a + 1) * Settings::padding;
+    return a * Settings::gridSize;
 }
 
 float randomFloat()

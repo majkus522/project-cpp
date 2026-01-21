@@ -18,7 +18,7 @@ class InputField : public GuiElement, public Clickable
     public:
         InputField(Vector2f position, Vector2f size, void (*function)(const GuiElement*));
         void click(Vector2f position) const override;
-        virtual void setText(string text);
+        virtual bool setText(string text);
         string getText();
 };
 
