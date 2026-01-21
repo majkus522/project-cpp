@@ -140,15 +140,13 @@ void Organism::resize(Vector2i newSize)
 
 void Organism::click(Vector2i position)
 {
-    cout << position.x << " " << position.y << endl;
-    for (int dx = -size.x / 30; dx <= size.x / 30; dx++)
+    int radius = min(size.x, size.y) / 40;
+    for (int dy = -radius; dy <= radius; dy++)
     {
-        for (int dy = -size.y / 30; dy <= size.y / 30; dy++)
+        int xLimit = static_cast<int>(std::sqrt(radius * radius - dy * dy));
+        for (int dx = -xLimit; dx <= xLimit; dx++)
         {
-            if (position.y + dy < 0 || position.y + dy >= size.y || position.x + dx < 0 || position.x + dx >= size.x)
-                continue;
             cells[position.y + dy][position.x + dx] = 1;
-            newCells[position.y + dy][position.x + dx] = 1;
         }
     }
 }
