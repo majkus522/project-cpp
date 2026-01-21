@@ -34,40 +34,26 @@ void initSettings()
     Settings::delay = seconds(((IntField*)guiElements["fieldTime"])->getValue() / 1000.0f);
 }
 
-void setEnabledAll(bool value)
-{
-    for (pair<string, GuiElement*> element : guiElements)
-        element.second->setEnabled(value);
-}
-
 void createSimulation(const GuiElement * element)
 {
-    guiElements["buttonStart"]->setEnabled(true);
     int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
     int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
     if (simulation != nullptr)
         simulation->close();
     simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
     organism = new Organism({ x, y }, simulation);
-    guiElements["buttonCreate"]->setEnabled(false);
-    guiElements["buttonResize"]->setEnabled(true);
 }
 
 void startSimulation(const GuiElement * element)
 {
     initSettings();
     isRunning = true;
-    setEnabledAll(false);
-    guiElements["buttonStop"]->setEnabled(true);
     timer.restart();
 }
 
 void stopSimulation(const GuiElement * element)
 {
     isRunning = false;
-    setEnabledAll(true);
-    guiElements["buttonStop"]->setEnabled(false);
-    guiElements["buttonCreate"]->setEnabled(false);
 }
 
 void setFocus(const GuiElement * element)
@@ -98,18 +84,15 @@ int main()
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
-    guiElements["buttonStart"]->setEnabled(false);
     guiElements.insert({"buttonStop", new Button({200, 50}, {150, 50}, "Stop", stopSimulation)});
-    guiElements["buttonStop"]->setEnabled(false);
 
     guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
-    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 1000, setFocus, 100)});
+    guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 1000, setFocus, 300)});
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
-    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 100)});
+    guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 300)});
 
     guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
-    guiElements["buttonResize"]->setEnabled(false);
 
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
     guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 1, 100, setFocus, 6) });
@@ -118,7 +101,7 @@ int main()
     guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
     guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
     guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay [ms]:") });
-    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 50, 10000, setFocus, 1000) });
+    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 50, 10000, setFocus, 100) });
 
     bool lockClick = false;
     bool lockInput = false;
@@ -136,15 +119,6 @@ int main()
             {
                 simulation->close();
                 simulation = nullptr;
-                guiElements["buttonStart"]->setEnabled(false);
-                guiElements["buttonStop"]->setEnabled(false);
-                guiElements["buttonCreate"]->setEnabled(true);
-                guiElements["buttonResize"]->setEnabled(false);
-                guiElements["fieldSizeX"]->setEnabled(true);
-                guiElements["fieldSizeY"]->setEnabled(true);
-                guiElements["fieldTimeSick"]->setEnabled(true);
-                guiElements["fieldTimeRes"]->setEnabled(true);
-                guiElements["fieldPercent"]->setEnabled(true);
                 isRunning = false;
             }
         }

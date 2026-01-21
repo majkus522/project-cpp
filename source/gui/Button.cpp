@@ -20,7 +20,7 @@ Button::Button(Vector2f position, Vector2f size, string text, void (*function)(c
 
 void Button::click(Vector2f position) const
 {
-    if (rect.contains(position) && isEnabled)
+    if (rect.contains(position))
         function(this);
 }
 
@@ -29,7 +29,7 @@ void Button::draw(RenderTarget &target, RenderStates states) const
     RectangleShape rectangle;
     rectangle.setPosition(position);
     rectangle.setSize(size);
-    rectangle.setFillColor(isEnabled ? Color::White : Color::Black);
+    rectangle.setFillColor(Color::White);
     rectangle.setOutlineColor(Color(100, 100, 100));
     rectangle.setOutlineThickness(3);
     target.draw(rectangle, states);
