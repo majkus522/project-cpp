@@ -9,12 +9,11 @@ using namespace std;
 class Organism
 {
     public:
-        Organism(Vector2i size, RenderWindow* window);
-        void drawGrid();
+        Organism(Vector2i size);
+        void drawGrid(RenderWindow& window);
         void tick();
         void resize(Vector2i newSize);
         static unsigned int calcSize(int a);
-        RenderWindow* window;
 
     private:
         vector<vector<int>> cells;

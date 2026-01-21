@@ -33,7 +33,7 @@ void color(int x, int y, Color color, Image& image)
     }
 }
 
-Organism::Organism(Vector2i size, RenderWindow* window) : size(size), window(window)
+Organism::Organism(Vector2i size) : size(size)
 {
     cells = {};
     for (int y = 0; y < size.y; y++)
@@ -49,7 +49,7 @@ Organism::Organism(Vector2i size, RenderWindow* window) : size(size), window(win
     newCells = cells;
 }
 
-void Organism::drawGrid()
+void Organism::drawGrid(RenderWindow& window)
 {
     Image image;
     image.create(calcSize(size.x), calcSize(size.y), Color(0, 100, 0));
@@ -68,7 +68,8 @@ void Organism::drawGrid()
     Texture texture;
     texture.loadFromImage(image, IntRect(0, 0, calcSize(size.x), calcSize(size.y)));
     Sprite bufferSprite(texture);
-    window->draw(bufferSprite);
+    bufferSprite.setPosition(600, 0);
+    window.draw(bufferSprite);
 }
 
 void Organism::tick()

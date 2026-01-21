@@ -24,7 +24,6 @@ bool isRunning = false;
 Organism *organism;
 Clock timer;
 InputField *focus = nullptr;
-RenderWindow* simulation = nullptr;
 
 void initSettings()
 {
@@ -32,16 +31,6 @@ void initSettings()
     Settings::timeResistant = ((IntField*)guiElements["fieldTimeRes"])->getValue();
     Settings::spreadChance = ((IntField*)guiElements["fieldPercent"])->getValue() / 100.0f;
     Settings::delay = seconds(((IntField*)guiElements["fieldTime"])->getValue() / 1000.0f);
-}
-
-void createSimulation(const GuiElement * element)
-{
-    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
-    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
-    if (simulation != nullptr)
-        simulation->close();
-    simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
-    organism = new Organism({ x, y }, simulation);
 }
 
 void startSimulation(const GuiElement * element)
@@ -73,14 +62,11 @@ void resize(const GuiElement* element)
     int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
     int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
     organism->resize({ x, y });
-    simulation->close();
-    simulation = new RenderWindow(VideoMode(Organism::calcSize(x), Organism::calcSize(y)), "Simulation", sf::Style::Titlebar | sf::Style::Close);
-    organism->window = simulation;
 }
 
 int main()
 {
-    RenderWindow window(VideoMode(550, 650), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
+    RenderWindow window(sf::VideoMode::getDesktopMode(), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
@@ -91,7 +77,7 @@ int main()
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
     guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 300)});
 
-    guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
+    //guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
 
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
@@ -106,30 +92,19 @@ int main()
     bool lockClick = false;
     bool lockInput = false;
 
+    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
+    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+    organism = new Organism({ x, y });
+
     Event simulationEvent;
     Event windowEvent;
 
     while (window.isOpen())
     {
-        //Check events - simulation
-        if (simulation != nullptr)
-        {
-            simulation->pollEvent(simulationEvent);
-            if (simulationEvent.type == Event::Closed)
-            {
-                simulation->close();
-                simulation = nullptr;
-                isRunning = false;
-            }
-        }
-
-        //Check events - window
         window.pollEvent(windowEvent);
         if (windowEvent.type == Event::Closed)
         {
             window.close();
-            if (simulation != nullptr)
-                simulation->close();
         }
         else if (windowEvent.type == Event::MouseButtonPressed)
         {
@@ -185,15 +160,10 @@ int main()
 
         //Redraw window
         window.clear();
-        if (simulation != nullptr)
-            simulation->clear();
-        if (simulation != nullptr)
-            organism->drawGrid();
+        organism->drawGrid(window);
         for (pair<string, GuiElement*> element : guiElements)
             window.draw(*element.second);
         window.display();
-        if (simulation != nullptr)
-            simulation->display();
     }
     return 0;
 }
