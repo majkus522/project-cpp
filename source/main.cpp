@@ -95,13 +95,13 @@ int main()
     guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
 
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
-    guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 1, 100, setFocus, 6) });
+    guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 0, 100, setFocus, 6) });
     guiElements.insert({ "textTimeRes", new TextElement({50, 450}, {200, 50}, "Time resistant:") });
-    guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 1, 100, setFocus, 2) });
+    guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 0, 100, setFocus, 2) });
     guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
-    guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 1, 100, setFocus, 50) });
+    guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 0, 100, setFocus, 50) });
     guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay [ms]:") });
-    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 50, 10000, setFocus, 100) });
+    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 10, 10000, setFocus, 100) });
 
     bool lockClick = false;
     bool lockInput = false;
