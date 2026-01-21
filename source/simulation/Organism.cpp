@@ -68,7 +68,7 @@ void Organism::draw(RenderTarget& target, RenderStates states) const
     Texture texture;
     texture.loadFromImage(image, IntRect(0, 0, calcSize(size.x), calcSize(size.y)));
     Sprite bufferSprite(texture);
-    bufferSprite.setPosition(600, 0);
+    bufferSprite.setPosition(550, 10);
     target.draw(bufferSprite, states);
 }
 

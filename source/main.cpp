@@ -24,6 +24,8 @@ bool isRunning = false;
 Organism *organism;
 Clock timer;
 InputField *focus = nullptr;
+int x;
+int y;
 
 void initSettings()
 {
@@ -31,6 +33,13 @@ void initSettings()
     Settings::timeResistant = ((IntField*)guiElements["fieldTimeRes"])->getValue();
     Settings::spreadChance = ((IntField*)guiElements["fieldPercent"])->getValue() / 100.0f;
     Settings::delay = seconds(((IntField*)guiElements["fieldTime"])->getValue() / 1000.0f);
+    x = ((IntField*)guiElements["fieldSizeX"])->getValue();
+    y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+
+    VideoMode size = VideoMode::getDesktopMode();
+    unsigned int pixels = min(size.width - 550, size.height - 50);
+    unsigned int cells = max(x, y);
+    Settings::gridSize = pixels / cells;
 }
 
 void startSimulation(const GuiElement * element)
@@ -59,14 +68,13 @@ void tick()
 
 void resize(const GuiElement* element)
 {
-    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
-    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+    initSettings();
     organism->resize({ x, y });
 }
 
 int main()
 {
-    RenderWindow window(sf::VideoMode::getDesktopMode(), "Simulation - Config", sf::Style::Titlebar | sf::Style::Close);
+    RenderWindow window(VideoMode::getDesktopMode(), "Simulation - Config", Style::Titlebar | Style::Close);
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
@@ -92,8 +100,7 @@ int main()
     bool lockClick = false;
     bool lockInput = false;
 
-    int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
-    int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
+    initSettings();
     organism = new Organism({ x, y });
 
     Event simulationEvent;
@@ -128,7 +135,7 @@ int main()
                 }
             }
         }
-        else if (windowEvent.type == sf::Event::MouseButtonReleased && windowEvent.mouseButton.button == sf::Mouse::Left)
+        else if (windowEvent.type == Event::MouseButtonReleased && windowEvent.mouseButton.button == Mouse::Left)
         {
             lockClick = false;
         }
