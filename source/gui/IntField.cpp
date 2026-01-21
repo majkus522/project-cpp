@@ -10,6 +10,7 @@ IntField::IntField(Vector2f position, Vector2f size, int min, int max, void (*fu
     this->max = max;
     value = std::min(max, std::max(min, value));
     this->text = to_string(value);
+    this->focused = false;
 }
 
 bool IntField::setText(string text)

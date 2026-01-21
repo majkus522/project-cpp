@@ -59,6 +59,7 @@ void stopSimulation(const GuiElement * element)
 void setFocus(const GuiElement * element)
 {
     focus = (InputField*)element;
+    focus->setFocus(true);
 }
 
 void tick()
@@ -134,6 +135,8 @@ int main()
         {
             if (windowEvent.mouseButton.button == Mouse::Left && !lockClick)
             {
+                if (focus != nullptr)
+                    focus->setFocus(false);
                 focus = nullptr;
                 initSettings();
                 lockClick = true;
@@ -162,6 +165,7 @@ int main()
                 sf::String input = static_cast<char>(windowEvent.text.unicode);
                 if (focus->setText(input))
                 {
+                    focus->setFocus(false);
                     focus = nullptr;
                     initSettings();
                 }

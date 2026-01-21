@@ -15,6 +15,7 @@ InputField::InputField(Vector2f position, Vector2f size, void (*function)(const 
     this->text = "";
     this->function = function;
     this->rect = Rect<float>(position, size);
+    this->focused = false;
 }
 
 void InputField::click(Vector2f position) const
@@ -40,12 +41,17 @@ string InputField::getText()
     return this->text;
 }
 
+void InputField::setFocus(bool value)
+{
+    focused = value;
+}
+
 void InputField::draw(RenderTarget &target, RenderStates states) const
 {
     RectangleShape rectangle;
     rectangle.setPosition(position);
     rectangle.setSize(size);
-    rectangle.setFillColor(Color::White);
+    rectangle.setFillColor(focused ? Color(150, 150, 150) : Color::White);
     rectangle.setOutlineColor(Color(100, 100, 100));
     rectangle.setOutlineThickness(3);
     target.draw(rectangle, states);

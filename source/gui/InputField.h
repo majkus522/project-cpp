@@ -14,12 +14,14 @@ class InputField : public GuiElement, public Clickable
         string text;
         Rect<float> rect;
         void draw(RenderTarget& target, RenderStates states) const override;
+        bool focused;
 
     public:
         InputField(Vector2f position, Vector2f size, void (*function)(const GuiElement*));
         void click(Vector2f position) const override;
         virtual bool setText(string text);
         string getText();
+        void setFocus(bool value);
 };
 
 #endif
