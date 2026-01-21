@@ -43,7 +43,6 @@ void setEnabledAll(bool value)
 void createSimulation(const GuiElement * element)
 {
     guiElements["buttonStart"]->setEnabled(true);
-    //guiElements["buttonTick"]->setEnabled(true);
     int x = ((IntField*)guiElements["fieldSizeX"])->getValue();
     int y = ((IntField*)guiElements["fieldSizeY"])->getValue();
     if (simulation != nullptr)
@@ -102,8 +101,6 @@ int main()
     guiElements["buttonStart"]->setEnabled(false);
     guiElements.insert({"buttonStop", new Button({200, 50}, {150, 50}, "Stop", stopSimulation)});
     guiElements["buttonStop"]->setEnabled(false);
-    //guiElements.insert({"buttonTick", new Button({350, 50}, {150, 50}, "Tick", tick)});
-    //guiElements["buttonTick"]->setEnabled(false);
 
     guiElements.insert({ "textX", new TextElement({50, 150}, {50, 50}, "X:") });
     guiElements.insert({"fieldSizeX", new IntField({100, 150}, {100, 50}, 0, 1000, setFocus, 100)});
@@ -141,7 +138,6 @@ int main()
                 simulation = nullptr;
                 guiElements["buttonStart"]->setEnabled(false);
                 guiElements["buttonStop"]->setEnabled(false);
-                //guiElements["buttonTick"]->setEnabled(false);
                 guiElements["buttonCreate"]->setEnabled(true);
                 guiElements["buttonResize"]->setEnabled(false);
                 guiElements["fieldSizeX"]->setEnabled(true);

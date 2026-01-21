@@ -3,3 +3,7 @@ cmake-build-debug
 
 sfml-app
 test.cpp
+
+.vs
+project-cpp
+x64
