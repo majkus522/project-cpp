@@ -37,9 +37,15 @@ void initSettings()
     y = ((IntField*)guiElements["fieldSizeY"])->getValue();
 
     VideoMode size = VideoMode::getDesktopMode();
-    unsigned int pixels = min(size.width - 550, size.height - 50);
-    unsigned int cells = max(x, y);
-    Settings::gridSize = pixels / cells;
+    if (size.width - 550 <= x * Settings::gridSize || size.height - 50 <= y * Settings::gridSize)
+    {
+        unsigned int pixels = min(size.width - 550, size.height - 50);
+        unsigned int cells = max(x, y);
+        Settings::gridSize = pixels / cells;
+    }
+
+    if (organism != nullptr)
+        organism->resize({ x, y });
 }
 
 void startSimulation(const GuiElement * element)
@@ -66,12 +72,6 @@ void tick()
     timer.restart();
 }
 
-void resize(const GuiElement* element)
-{
-    initSettings();
-    organism->resize({ x, y });
-}
-
 int main()
 {
     RenderWindow window(VideoMode::getDesktopMode(), "Simulation - Config", Style::Titlebar | Style::Close);
@@ -86,7 +86,7 @@ int main()
     guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 300)});
 
     //guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
-    guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
+    //guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
 
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
     guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 0, 100, setFocus, 6) });
@@ -101,7 +101,7 @@ int main()
     bool lockInput = false;
 
     initSettings();
-    organism = new Organism({ x, y });
+    organism = new Organism({x, y});
 
     Event simulationEvent;
     Event windowEvent;
