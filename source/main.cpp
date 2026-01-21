@@ -160,7 +160,7 @@ int main()
 
         //Redraw window
         window.clear();
-        organism->drawGrid(window);
+        window.draw(*organism);
         for (pair<string, GuiElement*> element : guiElements)
             window.draw(*element.second);
         window.display();

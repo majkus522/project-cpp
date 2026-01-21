@@ -49,7 +49,7 @@ Organism::Organism(Vector2i size) : size(size)
     newCells = cells;
 }
 
-void Organism::drawGrid(RenderWindow& window)
+void Organism::draw(RenderTarget& target, RenderStates states) const
 {
     Image image;
     image.create(calcSize(size.x), calcSize(size.y), Color(0, 100, 0));
@@ -69,7 +69,7 @@ void Organism::drawGrid(RenderWindow& window)
     texture.loadFromImage(image, IntRect(0, 0, calcSize(size.x), calcSize(size.y)));
     Sprite bufferSprite(texture);
     bufferSprite.setPosition(600, 0);
-    window.draw(bufferSprite);
+    target.draw(bufferSprite, states);
 }
 
 void Organism::tick()
