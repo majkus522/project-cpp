@@ -20,12 +20,13 @@ using namespace sf;
 using namespace std;
 
 map<string, GuiElement*> guiElements;
-bool isRunning = false;
+bool isRunning = true;
 Organism *organism;
 Clock timer;
 InputField *focus = nullptr;
 int x;
 int y;
+Rect<float> simRect;
 
 void initSettings()
 {
@@ -45,7 +46,8 @@ void initSettings()
     }
 
     if (organism != nullptr)
-        organism->resize({ x, y });
+        organism->resize({x, y});
+    simRect = Rect<float>(550, 10, x * Settings::gridSize, y * Settings::gridSize);
 }
 
 void startSimulation(const GuiElement * element)
@@ -85,9 +87,6 @@ int main()
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
     guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 300)});
 
-    //guiElements.insert({"buttonCreate", new Button({100, 250}, {150, 50}, "Create", createSimulation)});
-    //guiElements.insert({"buttonResize", new Button({300, 250}, {150, 50}, "Resize", resize)});
-
     guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
     guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 0, 100, setFocus, 6) });
     guiElements.insert({ "textTimeRes", new TextElement({50, 450}, {200, 50}, "Time resistant:") });
@@ -122,16 +121,21 @@ int main()
                 focus = nullptr;
                 initSettings();
                 lockClick = true;
-                Vector2i localPosition = Mouse::getPosition(window);
+                Vector2f localPosition = (Vector2f)Mouse::getPosition(window);
                 for (pair<string, GuiElement*> element : guiElements)
                 {
                     if (dynamic_cast<Clickable*>(element.second))
                     {
                         if (dynamic_cast<Button*>(element.second))
-                            ((Button*)element.second)->click((Vector2f)localPosition);
+                            ((Button*)element.second)->click(localPosition);
                         else if (dynamic_cast<InputField*>(element.second))
-                            ((InputField*)element.second)->click((Vector2f)localPosition);
+                            ((InputField*)element.second)->click(localPosition);
                     }
+                }
+                if (simRect.contains(localPosition))
+                {
+                    localPosition -= Vector2f(550, 10);
+                    organism->click({(int)(localPosition.x / Settings::gridSize), (int)(localPosition.y / Settings::gridSize)});
                 }
             }
         }
@@ -158,10 +162,8 @@ int main()
             lockInput = false;
         }
 
-        //Tick simulation
         if(timer.getElapsedTime() >= Settings::delay && isRunning)
         {
-            //cout << timer.getElapsedTime().asMilliseconds() << endl;
             tick();
         }
 

@@ -45,7 +45,7 @@ Organism::Organism(Vector2i size) : size(size)
         }
         cells.push_back(row);
     }
-    cells[ceil(size.y / 2)][ceil(size.x / 2)] = 1;
+    //cells[ceil(size.y / 2)][ceil(size.x / 2)] = 1;
     newCells = cells;
 }
 
@@ -136,4 +136,19 @@ void Organism::resize(Vector2i newSize)
     }
     cells = newCells;
     size = newSize;
+}
+
+void Organism::click(Vector2i position)
+{
+    cout << position.x << " " << position.y << endl;
+    for (int dx = -size.x / 30; dx <= size.x / 30; dx++)
+    {
+        for (int dy = -size.y / 30; dy <= size.y / 30; dy++)
+        {
+            if (position.y + dy < 0 || position.y + dy >= size.y || position.x + dx < 0 || position.x + dx >= size.x)
+                continue;
+            cells[position.y + dy][position.x + dx] = 1;
+            newCells[position.y + dy][position.x + dx] = 1;
+        }
+    }
 }

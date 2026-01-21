@@ -13,6 +13,7 @@ class Organism : public Drawable
         void tick();
         void resize(Vector2i newSize);
         static unsigned int calcSize(int a);
+        void click(Vector2i position);
 
     private:
         vector<vector<int>> cells;
