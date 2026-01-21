@@ -45,7 +45,7 @@ Organism::Organism(Vector2i size) : size(size)
         }
         cells.push_back(row);
     }
-    //cells[ceil(size.y / 2)][ceil(size.x / 2)] = 1;
+    cells[ceil(size.y / 2)][ceil(size.x / 2)] = 1;
     newCells = cells;
 }
 
@@ -58,9 +58,9 @@ void Organism::draw(RenderTarget& target, RenderStates states) const
         for (int x = 0; x < size.x; x++)
         {
             if (cells[y][x] > 0)
-                color(x, y, Settings::colorSick, image);
+                color(x, y, Settings::colorSick.getColor((float)(cells[y][x] - 1) / (float)(Settings::timeSick * 2)), image);
             else if (cells[y][x] < 0)
-                color(x, y, Settings::colorResistant, image);
+                color(x, y, Settings::colorResistant.getColor((float)(-cells[y][x] - 1) / (float)(Settings::timeResistant * 2)), image);
             else
                 color(x, y, Settings::colorNormal, image);
         }
@@ -140,13 +140,14 @@ void Organism::resize(Vector2i newSize)
 
 void Organism::click(Vector2i position)
 {
-    int radius = min(size.x, size.y) / 40;
+    int radius = min(size.x, size.y) / 30;
     for (int dy = -radius; dy <= radius; dy++)
     {
         int xLimit = static_cast<int>(std::sqrt(radius * radius - dy * dy));
         for (int dx = -xLimit; dx <= xLimit; dx++)
         {
             cells[position.y + dy][position.x + dx] = 1;
+            newCells[position.y + dy][position.x + dx] = 1;
         }
     }
 }

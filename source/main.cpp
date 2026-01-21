@@ -38,12 +38,9 @@ void initSettings()
     y = ((IntField*)guiElements["fieldSizeY"])->getValue();
 
     VideoMode size = VideoMode::getDesktopMode();
-    if (size.width - 550 <= x * Settings::gridSize || size.height - 50 <= y * Settings::gridSize)
-    {
-        unsigned int pixels = min(size.width - 550, size.height - 50);
-        unsigned int cells = max(x, y);
-        Settings::gridSize = pixels / cells;
-    }
+    unsigned int pixels = min(size.width - 550, size.height - 50);
+    unsigned int cells = max(x, y);
+    Settings::gridSize = pixels / cells;
 
     if (organism != nullptr)
         organism->resize({x, y});
@@ -76,7 +73,7 @@ void tick()
 
 int main()
 {
-    RenderWindow window(VideoMode::getDesktopMode(), "Simulation - Config", Style::Titlebar | Style::Close);
+    RenderWindow window(VideoMode::getDesktopMode(), "Problem Liszaja", Style::Titlebar | Style::Close);
     timer.restart();
 
     guiElements.insert({"buttonStart", new Button({50, 50}, {150, 50}, "Start", startSimulation)});
@@ -87,14 +84,14 @@ int main()
     guiElements.insert({ "textY", new TextElement({300, 150}, {50, 50}, "Y:") });
     guiElements.insert({"fieldSizeY", new IntField({350, 150}, {100, 50}, 0, 1000, setFocus, 300)});
 
-    guiElements.insert({ "textTimeSick", new TextElement({50, 400}, {150, 50}, "Time sick:") });
-    guiElements.insert({ "fieldTimeSick", new IntField({300, 400}, {100, 50}, 0, 100, setFocus, 6) });
-    guiElements.insert({ "textTimeRes", new TextElement({50, 450}, {200, 50}, "Time resistant:") });
-    guiElements.insert({ "fieldTimeRes", new IntField({300, 450}, {100, 50}, 0, 100, setFocus, 2) });
-    guiElements.insert({ "textPercent", new TextElement({50, 500}, {200, 50}, "Spread percent:") });
-    guiElements.insert({ "fieldPercent", new IntField({300, 500}, {100, 50}, 0, 100, setFocus, 50) });
-    guiElements.insert({ "textTime", new TextElement({50, 550}, {200, 50}, "Delay [ms]:") });
-    guiElements.insert({ "fieldTime", new IntField({300, 550}, {150, 50}, 10, 10000, setFocus, 100) });
+    guiElements.insert({ "textTimeSick", new TextElement({50, 250}, {150, 50}, "Time sick:") });
+    guiElements.insert({ "fieldTimeSick", new IntField({300, 250}, {100, 50}, 0, 100, setFocus, 6) });
+    guiElements.insert({ "textTimeRes", new TextElement({50, 300}, {200, 50}, "Time resistant:") });
+    guiElements.insert({ "fieldTimeRes", new IntField({300, 300}, {100, 50}, 0, 100, setFocus, 2) });
+    guiElements.insert({ "textPercent", new TextElement({50, 350}, {200, 50}, "Spread percent:") });
+    guiElements.insert({ "fieldPercent", new IntField({300, 350}, {100, 50}, 0, 100, setFocus, 50) });
+    guiElements.insert({ "textTime", new TextElement({50, 400}, {200, 50}, "Delay [ms]:") });
+    guiElements.insert({ "fieldTime", new IntField({300, 400}, {150, 50}, 10, 10000, setFocus, 100) });
 
     bool lockClick = false;
     bool lockInput = false;
@@ -167,7 +164,6 @@ int main()
             tick();
         }
 
-        //Redraw window
         window.clear();
         window.draw(*organism);
         for (pair<string, GuiElement*> element : guiElements)

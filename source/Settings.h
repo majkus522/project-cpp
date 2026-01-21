@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics/Color.hpp>
 #include <SFML/System/Time.hpp>
+#include "ColorGradient.h"
 
 using namespace sf;
 
@@ -15,8 +16,8 @@ class Settings
         static unsigned int gridSize;
         static Time delay;
         static Color colorNormal;
-        static Color colorSick;
-        static Color colorResistant;
+        static ColorGradient colorSick;
+        static ColorGradient colorResistant;
 };
 
 #endif
